@@ -28,6 +28,7 @@ int main(int argc, const char * argv[]) {
     w.attach<Transform>(object2);
 	w.attach<RigidBody>(object2);
 	w.attach<BoundingBox>(object2);
+	w.attach<SpringJoint>(object2);
 	
 	physics.setMass(100.0, object2);
 	collision.setBoundingVolume({50, 50, 50}, object2);
@@ -36,7 +37,7 @@ int main(int argc, const char * argv[]) {
 	w.addUpdater(std::ref(collision));
 	
 	size_t i = 0;
-	while(i < 100)
+	while(true)
 	{
 		w.update(1.0 / 60);
 		i++;

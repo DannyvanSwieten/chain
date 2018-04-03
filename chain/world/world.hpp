@@ -30,6 +30,12 @@ public:
 		collection.initialize<C>(Entity);
 	}
 	
+	template<typename C>
+	bool has(Entity e)
+	{
+		return std::get<ComponentStorage<C>>(collection).has(e);
+	}
+	
 	template<class C>
 	auto begin()
 	{

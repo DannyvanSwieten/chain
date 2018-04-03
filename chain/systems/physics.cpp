@@ -25,9 +25,15 @@ void PhysicsUpdater::operator()(World& w, double dt)
 	{
 		auto& body = bodies[e];
 		auto& transform = transforms[e];
+		if(w.has<SpringJoint>(e))
+		{
+			auto& spring = w.getAll<SpringJoint>()[e];
+			const auto F = -spring->k * transform->position - spring->b * body->velocity;
+			body->momentum += F * dt;
+		}
 		
 		body->velocity = body->momentum * body->invMass;
-		body->momentum.y += -9.8 * dt;
+//		body->momentum.y += -9.8 * dt;
 		transform->position += body->velocity * dt;
 		
 		std::cout << transform->position << std::endl;

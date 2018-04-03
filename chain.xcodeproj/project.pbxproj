@@ -32,6 +32,7 @@
 		305F3E7F2073BAF200EE1FF6 /* collision.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = collision.cpp; sourceTree = "<group>"; };
 		305F3E802073BAF200EE1FF6 /* collision.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = collision.hpp; sourceTree = "<group>"; };
 		305F3E822073BB8B00EE1FF6 /* bounding_box.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bounding_box.hpp; sourceTree = "<group>"; };
+		305F3E832073D67A00EE1FF6 /* spring_joint.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = spring_joint.hpp; sourceTree = "<group>"; };
 		3070FD90206A83C2000287DF /* chain */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = chain; sourceTree = BUILT_PRODUCTS_DIR; };
 		3070FD93206A83C2000287DF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		3087373E206D0FAF00642A69 /* component_storage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = component_storage.hpp; sourceTree = "<group>"; };
@@ -104,6 +105,7 @@
 				305F3E7A20738B7F00EE1FF6 /* rigid_body.hpp */,
 				FAC38E5D206E966700E1778A /* transform.hpp */,
 				305F3E822073BB8B00EE1FF6 /* bounding_box.hpp */,
+				305F3E832073D67A00EE1FF6 /* spring_joint.hpp */,
 			);
 			path = components;
 			sourceTree = "<group>";

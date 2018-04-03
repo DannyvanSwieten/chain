@@ -10,4 +10,5 @@
 
 #include "bounding_box.hpp"
 #include "rigid_body.hpp"
+#include "spring_joint.hpp"
 #include "transform.hpp"

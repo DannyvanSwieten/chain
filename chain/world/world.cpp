@@ -13,9 +13,9 @@ World::World(size_t numDefaultStoragePerComponent)
 	collection.reserve(numDefaultStoragePerComponent);
 }
 
-World::Object World::createObject()
+World::Entity World::createEntity()
 {
-	Object o = -1;
+	Entity o = -1;
 	if(freeList.size())
 	{
 		o = freeList.back();
@@ -23,22 +23,22 @@ World::Object World::createObject()
 	}
 	else
 	{
-		if(numObjects >= collection.size())
+		if(numEntitys >= collection.size())
 			collection.expand();
 		
-		o = numObjects;
+		o = numEntitys;
 	}
 	
-	numObjects++;
+	numEntitys++;
 	
 	return o;
 }
 
-void World::freeObject(Object object)
+void World::freeEntity(Entity Entity)
 {
-	collection.resetAll(object);
-	freeList.push(object);
-	numObjects--;
+	collection.resetAll(Entity);
+	freeList.push(Entity);
+	numEntitys--;
 }
 
 void World::addUpdater(std::function<void(World&, double)> updater)

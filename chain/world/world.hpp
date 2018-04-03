@@ -10,24 +10,24 @@
 
 #include <queue>
 
-#include "component_storage.hpp"
+#include "component_collection.hpp"
 
 class World
 {
 public:
 	
-	using Object = size_t;
+	using Entity = size_t;
 	
 	World(size_t numDefaultStoragePerComponent = 512);
 	
-	Object createObject();
+	Entity createEntity();
 	
-	void freeObject(Object object);
+	void freeEntity(Entity Entity);
 	
 	template<class C>
-	void attach(Object object)
+	void attach(Entity Entity)
 	{
-		collection.initialize<C>(object);
+		collection.initialize<C>(Entity);
 	}
 	
 	template<class C>
@@ -52,6 +52,12 @@ public:
 	{
 		return collection.size();
 	}
+    
+    template<typename... Ts>
+    auto getAllEntitiesWithComponents(std::vector<Entity>& output)
+    {
+        collection.getAllEntitiesWithComponents<Ts...>(output);
+    }
 	
 	void addUpdater(std::function<void(World&, double)> updater);
 	
@@ -59,9 +65,9 @@ public:
 	
 private:
 	
-	size_t numObjects = 0;
-	std::queue<Object> freeList;
-	ComponentStorageCollection<float, int> collection;
+	size_t numEntitys = 0;
+	std::queue<Entity> freeList;
+	component_collection_t collection;
 	
 	std::vector<std::function<void(World&, double)>> updaters;
 };

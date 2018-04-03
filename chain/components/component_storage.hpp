@@ -56,6 +56,11 @@ public:
 	{
 		return storage;
 	}
+    
+    bool has(size_t index) const
+    {
+        return (bool)storage[index];
+    }
 	
 private:
 	
@@ -118,8 +123,21 @@ public:
 		return std::get<ComponentStorage<C>>(*this).end();
 	}
 	
-	size_t size() const noexcept
+	auto size() const noexcept
 	{
 		return std::get<0>(*this).size();
 	}
+    
+    template<typename... Components>
+    auto getAllEntitiesWithComponents(std::vector<size_t>& output)
+    {
+        for(auto i = 0; i < size(); i++)
+        {
+            bool result = true;
+            result = (std::get<ComponentStorage<Components>>(*this).has(i) & ...);
+            
+            if(result)
+                output.emplace_back(i);
+        }
+    }
 };

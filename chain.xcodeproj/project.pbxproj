@@ -29,6 +29,12 @@
 		3087373E206D0FAF00642A69 /* component_storage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = component_storage.hpp; sourceTree = "<group>"; };
 		3087373F206D2CEA00642A69 /* world.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = world.cpp; sourceTree = "<group>"; };
 		30873740206D2CEA00642A69 /* world.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = world.hpp; sourceTree = "<group>"; };
+		FAC38E5B206E963F00E1778A /* components.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = components.hpp; sourceTree = "<group>"; };
+		FAC38E5D206E966700E1778A /* transform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = transform.hpp; sourceTree = "<group>"; };
+		FAC38E5E206E96E100E1778A /* vec.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec.hpp; sourceTree = "<group>"; };
+		FAC38E5F206E96F800E1778A /* precision.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = precision.hpp; sourceTree = "<group>"; };
+		FAC38E61206E977700E1778A /* component_collection.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = component_collection.hpp; sourceTree = "<group>"; };
+		FAC38E63206E980700E1778A /* mat.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mat.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,11 +68,41 @@
 			isa = PBXGroup;
 			children = (
 				3070FD93206A83C2000287DF /* main.cpp */,
+				FAC38E60206E976700E1778A /* world */,
+				FAC38E5C206E964800E1778A /* components */,
+			);
+			path = chain;
+			sourceTree = "<group>";
+		};
+		FAC38E5C206E964800E1778A /* components */ = {
+			isa = PBXGroup;
+			children = (
 				3087373E206D0FAF00642A69 /* component_storage.hpp */,
+				FAC38E61206E977700E1778A /* component_collection.hpp */,
+				FAC38E5B206E963F00E1778A /* components.hpp */,
+				FAC38E5D206E966700E1778A /* transform.hpp */,
+				FAC38E62206E97EE00E1778A /* math */,
+			);
+			path = components;
+			sourceTree = "<group>";
+		};
+		FAC38E60206E976700E1778A /* world */ = {
+			isa = PBXGroup;
+			children = (
 				3087373F206D2CEA00642A69 /* world.cpp */,
 				30873740206D2CEA00642A69 /* world.hpp */,
 			);
-			path = chain;
+			path = world;
+			sourceTree = "<group>";
+		};
+		FAC38E62206E97EE00E1778A /* math */ = {
+			isa = PBXGroup;
+			children = (
+				FAC38E5E206E96E100E1778A /* vec.hpp */,
+				FAC38E5F206E96F800E1778A /* precision.hpp */,
+				FAC38E63206E980700E1778A /* mat.hpp */,
+			);
+			path = math;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,7 +219,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -237,7 +273,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",

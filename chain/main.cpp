@@ -12,32 +12,35 @@
 //#include <chaiscript/chaiscript.hpp>
 
 #include "world.hpp"
+#include "systems/physics.hpp"
+#include "systems/collision.hpp"
 
 int main(int argc, const char * argv[]) {
 
+	PhysicsUpdater physics;
+	CollisionUpdater collision;
+	
 	World w(10);
 	const auto object = w.createEntity();
 	w.attach<Transform>(object);
     
     const auto object2 = w.createEntity();
-    
-    const auto object3 = w.createEntity();
-    
-    const auto object4 = w.createEntity();
-    w.attach<Transform>(object4);
+    w.attach<Transform>(object2);
+	w.attach<RigidBody>(object2);
+	w.attach<BoundingBox>(object2);
 	
-	w.addUpdater([](World& w, double dt){
-		
-        std::vector<World::Entity> entitiesToUpdate;
-        w.getAllEntitiesWithComponents<Transform>(entitiesToUpdate);
-        
-        auto& transforms = w.getAll<Transform>();
-		
-        for(const auto e: entitiesToUpdate)
-			std::cout << transforms[e]->position << std::endl;
-	});
+	physics.setMass(100.0, object2);
+	collision.setBoundingVolume({50, 50, 50}, object2);
 	
-	w.update(1.0 / 60);
+	w.addUpdater(std::ref(physics));
+	w.addUpdater(std::ref(collision));
+	
+	size_t i = 0;
+	while(i < 100)
+	{
+		w.update(1.0 / 60);
+		i++;
+	}
 	
 	return 0;
 }

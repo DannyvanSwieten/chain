@@ -11,4 +11,4 @@
 #include "components.hpp"
 #include "component_storage.hpp"
 
-using component_collection_t = ComponentStorageCollection<Transform>;
+using component_collection_t = ComponentStorageCollection<Transform, RigidBody, BoundingBox>;

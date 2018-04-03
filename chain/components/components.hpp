@@ -8,4 +8,6 @@
 
 #pragma once
 
+#include "bounding_box.hpp"
+#include "rigid_body.hpp"
 #include "transform.hpp"

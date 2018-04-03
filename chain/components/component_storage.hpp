@@ -133,8 +133,7 @@ public:
     {
         for(auto i = 0; i < size(); i++)
         {
-            bool result = true;
-            result = (std::get<ComponentStorage<Components>>(*this).has(i) & ...);
+            bool result = (std::get<ComponentStorage<Components>>(*this).has(i) & ...);
             
             if(result)
                 output.emplace_back(i);

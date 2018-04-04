@@ -43,9 +43,21 @@ void World::freeEntity(Entity Entity)
 	numEntitys--;
 }
 
-void World::setPosition(const vec3 &position, Entity entity)
+void World::setPosition(const vec3 &position, Entity e)
 {
-    getAll<Transform>()[entity]->position = position;
+    getAll<Transform>()[e]->position = position;
+}
+
+void World::setRotation(const vec3 &rotation, Entity e)
+{
+    getAll<Transform>()[e]->rotation = rotation;
+}
+
+void World::setScale(const vec3 &scale, Entity e)
+{
+    getAll<Transform>()[e]->scale = scale;
+    if(has<BoundingBox>(e))
+        getAll<BoundingBox>()[e]->radi *= scale;
 }
 
 void World::addUpdater(std::function<void(World&, double)> updater)

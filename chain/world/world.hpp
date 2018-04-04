@@ -24,7 +24,9 @@ public:
 	
 	void freeEntity(Entity entity);
     
-    void setPosition(const vec3& position, Entity entity);
+    void setPosition(const vec3& position, Entity e);
+    void setRotation(const vec3& rotation, Entity e);
+    void setScale(const vec3& scale, Entity e);
 	
 	template<class C>
 	void attach(Entity Entity)

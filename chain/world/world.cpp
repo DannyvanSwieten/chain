@@ -60,6 +60,11 @@ void World::setScale(const vec3 &scale, Entity e)
         getAll<BoundingBox>()[e]->radi *= scale;
 }
 
+void World::registerKeyPress(int key)
+{
+    
+}
+
 void World::addUpdater(std::function<void(World&, double)> updater)
 {
 	updaters.emplace_back(updater);

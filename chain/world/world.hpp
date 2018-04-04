@@ -27,6 +27,8 @@ public:
     void setPosition(const vec3& position, Entity e);
     void setRotation(const vec3& rotation, Entity e);
     void setScale(const vec3& scale, Entity e);
+    
+    void registerKeyPress(int);
 	
 	template<class C>
 	void attach(Entity Entity)

@@ -11,6 +11,10 @@
 		305F3E812073BAF200EE1FF6 /* collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 305F3E7F2073BAF200EE1FF6 /* collision.cpp */; };
 		3070FD94206A83C2000287DF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3070FD93206A83C2000287DF /* main.cpp */; };
 		30873741206D2CEA00642A69 /* world.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3087373F206D2CEA00642A69 /* world.cpp */; };
+		FADFA9602074B8F9001351CF /* script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADFA95E2074B8F9001351CF /* script.cpp */; };
+		FADFA9632074B99F001351CF /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADFA9612074B99F001351CF /* input.cpp */; };
+		FADFA9662074C00A001351CF /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADFA9642074C00A001351CF /* renderer.cpp */; };
+		FADFA9692074C138001351CF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADFA9682074C138001351CF /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,6 +48,13 @@
 		FAC38E5F206E96F800E1778A /* precision.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = precision.hpp; sourceTree = "<group>"; };
 		FAC38E61206E977700E1778A /* component_collection.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = component_collection.hpp; sourceTree = "<group>"; };
 		FAC38E63206E980700E1778A /* mat.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mat.hpp; sourceTree = "<group>"; };
+		FADFA95E2074B8F9001351CF /* script.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = script.cpp; sourceTree = "<group>"; };
+		FADFA95F2074B8F9001351CF /* script.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = script.hpp; sourceTree = "<group>"; };
+		FADFA9612074B99F001351CF /* input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = input.cpp; sourceTree = "<group>"; };
+		FADFA9622074B99F001351CF /* input.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = input.hpp; sourceTree = "<group>"; };
+		FADFA9642074C00A001351CF /* renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = renderer.cpp; sourceTree = "<group>"; };
+		FADFA9652074C00A001351CF /* renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = renderer.hpp; sourceTree = "<group>"; };
+		FADFA9682074C138001351CF /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FADFA9692074C138001351CF /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +76,10 @@
 				305F3E7D20738F9800EE1FF6 /* physics.hpp */,
 				305F3E7F2073BAF200EE1FF6 /* collision.cpp */,
 				305F3E802073BAF200EE1FF6 /* collision.hpp */,
+				FADFA9612074B99F001351CF /* input.cpp */,
+				FADFA9622074B99F001351CF /* input.hpp */,
+				FADFA9642074C00A001351CF /* renderer.cpp */,
+				FADFA9652074C00A001351CF /* renderer.hpp */,
 			);
 			path = systems;
 			sourceTree = "<group>";
@@ -73,6 +89,7 @@
 			children = (
 				3070FD92206A83C2000287DF /* chain */,
 				3070FD91206A83C2000287DF /* Products */,
+				FADFA9672074C138001351CF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -88,10 +105,11 @@
 			isa = PBXGroup;
 			children = (
 				3070FD93206A83C2000287DF /* main.cpp */,
-				305F3E7B20738F8500EE1FF6 /* systems */,
-				FAC38E62206E97EE00E1778A /* math */,
-				FAC38E60206E976700E1778A /* world */,
 				FAC38E5C206E964800E1778A /* components */,
+				FAC38E62206E97EE00E1778A /* math */,
+				FADFA95D2074B8CF001351CF /* scripting */,
+				305F3E7B20738F8500EE1FF6 /* systems */,
+				FAC38E60206E976700E1778A /* world */,
 			);
 			path = chain;
 			sourceTree = "<group>";
@@ -127,6 +145,23 @@
 				FAC38E63206E980700E1778A /* mat.hpp */,
 			);
 			path = math;
+			sourceTree = "<group>";
+		};
+		FADFA95D2074B8CF001351CF /* scripting */ = {
+			isa = PBXGroup;
+			children = (
+				FADFA95E2074B8F9001351CF /* script.cpp */,
+				FADFA95F2074B8F9001351CF /* script.hpp */,
+			);
+			path = scripting;
+			sourceTree = "<group>";
+		};
+		FADFA9672074C138001351CF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FADFA9682074C138001351CF /* OpenGL.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,7 +222,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				30873741206D2CEA00642A69 /* world.cpp in Sources */,
+				FADFA9602074B8F9001351CF /* script.cpp in Sources */,
+				FADFA9632074B99F001351CF /* input.cpp in Sources */,
 				305F3E7E20738F9800EE1FF6 /* physics.cpp in Sources */,
+				FADFA9662074C00A001351CF /* renderer.cpp in Sources */,
 				305F3E812073BAF200EE1FF6 /* collision.cpp in Sources */,
 				3070FD94206A83C2000287DF /* main.cpp in Sources */,
 			);
@@ -245,6 +283,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -252,6 +291,7 @@
 					"$(OTHER_CFLAGS)",
 					"-std=c++1z",
 				);
+				OTHER_LDFLAGS = "-lglfw";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -299,12 +339,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-std=c++1z",
 				);
+				OTHER_LDFLAGS = "-lglfw";
 				SDKROOT = macosx;
 			};
 			name = Release;

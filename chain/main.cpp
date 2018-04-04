@@ -22,13 +22,17 @@ int main(int argc, const char * argv[]) {
 	
 	World w(10);
 	const auto object = w.createEntity();
-	w.attach<Transform>(object);
+    w.attach<RigidBody>(object);
+    w.attach<BoundingBox>(object);
+    
+    physics.setMass(100.0, object);
+    collision.setBoundingVolume({50, 50, 50}, object);
     
     const auto object2 = w.createEntity();
-    w.attach<Transform>(object2);
 	w.attach<RigidBody>(object2);
 	w.attach<BoundingBox>(object2);
 	w.attach<SpringJoint>(object2);
+    w.setPosition({0, 100, 0}, object2);
 	
 	physics.setMass(100.0, object2);
 	collision.setBoundingVolume({50, 50, 50}, object2);

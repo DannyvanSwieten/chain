@@ -16,9 +16,13 @@ void CollisionUpdater::operator()(World& w, double dt)
 	updateState(w, dt);
 	
 	entitiesToUpdate.clear();
-	w.getAllEntitiesWithComponents<RigidBody, BoundingBox>(entitiesToUpdate);
-	
-	auto& boxes = w.getAll<BoundingBox>();
+	w.getAllEntitiesWithComponents<Transform, RigidBody, BoundingBox>(entitiesToUpdate);
+    
+    const auto& transforms = w.getAll<Transform>();
+    auto& boxes = w.getAll<BoundingBox>();
+    
+    for(const auto e: entitiesToUpdate)
+        boxes[e]->center = transforms[e]->position;
 	
 	for(auto i = 0; i < entitiesToUpdate.size(); i++)
 	{
@@ -28,9 +32,9 @@ void CollisionUpdater::operator()(World& w, double dt)
 			const size_t index = j % boxes.size();
 			auto& b = boxes[index];
 			
-			bool x = std::fabs(a->center.x - b->center.x) > std::fabs(a->radi.x + b->radi.x);
-			bool y = std::fabs(a->center.y - b->center.y) > std::fabs(a->radi.y + b->radi.y);
-			bool z = std::fabs(a->center.z - b->center.z) > std::fabs(a->radi.z + b->radi.z);
+			bool x = std::fabs(a->center.x - b->center.x) < std::fabs(a->radi.x + b->radi.x);
+			bool y = std::fabs(a->center.y - b->center.y) < std::fabs(a->radi.y + b->radi.y);
+			bool z = std::fabs(a->center.z - b->center.z) < std::fabs(a->radi.z + b->radi.z);
 			
 			bool collision = x & y & z;
 			

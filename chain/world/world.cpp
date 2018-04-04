@@ -30,6 +30,8 @@ World::Entity World::createEntity()
 	}
 	
 	numEntitys++;
+    
+    attach<Transform>(o);
 	
 	return o;
 }
@@ -39,6 +41,11 @@ void World::freeEntity(Entity Entity)
 	collection.resetAll(Entity);
 	freeList.push(Entity);
 	numEntitys--;
+}
+
+void World::setPosition(const vec3 &position, Entity entity)
+{
+    getAll<Transform>()[entity]->position = position;
 }
 
 void World::addUpdater(std::function<void(World&, double)> updater)

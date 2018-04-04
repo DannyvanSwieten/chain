@@ -22,7 +22,9 @@ public:
 	
 	Entity createEntity();
 	
-	void freeEntity(Entity Entity);
+	void freeEntity(Entity entity);
+    
+    void setPosition(const vec3& position, Entity entity);
 	
 	template<class C>
 	void attach(Entity Entity)

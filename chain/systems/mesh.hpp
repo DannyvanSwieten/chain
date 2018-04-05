@@ -14,6 +14,13 @@ class StaticMeshUpdater
 {
 public:
 	
+	struct Vertex
+	{
+		vec3 position;
+		vec3 normal;
+		vec2 uv;
+	};
+	
 	void operator()(World&, double);
 	void updateMesh(World::Entity e);
 	

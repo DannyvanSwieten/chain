@@ -20,7 +20,6 @@
 #include <GLFW/glfw3.h>
 
 int main(int argc, const char * argv[]) {
-
     
     const auto result = glfwInit();
     if(result != GLFW_TRUE)

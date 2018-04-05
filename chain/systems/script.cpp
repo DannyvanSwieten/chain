@@ -10,6 +10,11 @@
 
 ScriptUpdater::ScriptUpdater()
 {
+	chai.add(chaiscript::user_type<MeshFilter>(), "MeshFilter");
+	chai.add(chaiscript::fun(&MeshFilter::positions), "positions");
+	chai.add(chaiscript::fun(&MeshFilter::normals), "normals");
+	chai.add(chaiscript::fun(&MeshFilter::uv), "uv");
+	
 	chai.add(chaiscript::constructor<vec3(float, float, float)>(), "vec2");
 	chai.add(chaiscript::constructor<vec3(float, float, float)>(), "vec3");
 	chai.add(chaiscript::constructor<vec3(float, float, float)>(), "vec4");

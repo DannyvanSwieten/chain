@@ -12,13 +12,6 @@
 
 #include "../math/vec.hpp"
 
-struct Vertex
-{
-	vec3 position;
-	vec3 normal;
-	vec2 uv;
-};
-
 struct MeshFilter
 {
 	std::vector<vec3> positions;

@@ -21,9 +21,14 @@ public:
     
     void operator()(World& w, double dt);
     void registerKeyPress(int, int, int , int);
+	
+	bool isPressed(int c) const;
+	bool wasPressedThisFrame(int c) const;
     
 private:
     
-    std::array<int, 128> status;
+    std::array<bool, 128> pressedThisFrame;
+	std::array<bool, 128> currentlyPressed;
+	
     GLFWwindow* window = nullptr;
 };

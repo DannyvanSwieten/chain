@@ -14,6 +14,8 @@
 #include "systems/collision.hpp"
 #include "systems/input.hpp"
 #include "systems/renderer.hpp"
+#include "systems/mesh.hpp"
+#include "systems/script.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -40,30 +42,32 @@ int main(int argc, const char * argv[]) {
     InputUpdater input(window);
 	PhysicsUpdater physics;
 	CollisionUpdater collision;
-    
-    w.addUpdater(std::ref(renderer));
-    w.addUpdater(std::ref(input));
+	StaticMeshUpdater meshUpdater;
+	ScriptUpdater scriptUpdater;
+	scriptUpdater.getContext().add(chaiscript::fun(&InputUpdater::isPressed), "isPressed");
+	scriptUpdater.getContext().add(chaiscript::var(std::ref(input)), "inputController");
+	scriptUpdater.getContext().add(chaiscript::var(std::ref(physics)), "physicsSystem");
+	scriptUpdater.getContext().add(chaiscript::fun(&PhysicsUpdater::applyForce), "applyForce");
+	
+	w.addUpdater(std::ref(scriptUpdater));
+	w.addUpdater(std::ref(meshUpdater));
     w.addUpdater(std::ref(collision));
     w.addUpdater(std::ref(physics));
-    w.addUpdater(std::ref(collision));
+	w.addUpdater(std::ref(renderer));
+	w.addUpdater(std::ref(input));
+    
+    const auto e = w.createEntity();
+	w.attach<RigidBody>(e);
+	w.attach<Script>(e);
 	
-    const auto object = w.createEntity();
-    w.attach<RigidBody>(object);
-    w.attach<BoundingBox>(object);
-    
-    physics.setMass(100.0, object);
-    collision.setBoundingVolume({50, 50, 50}, object);
-    
-    const auto object2 = w.createEntity();
-    w.attach<StaticMesh>(object2);
-    w.attach<RigidBody>(object2);
-    w.attach<BoundingBox>(object2);
-    w.attach<SpringJoint>(object2);
-    w.setPosition({0, 100, 0}, object2);
-    
-    renderer.setMesh(StaticMesh(), object2);
-    physics.setMass(100.0, object2);
-    collision.setBoundingVolume({50, 50, 50}, object2);
+	const std::string source = R"(
+	if(inputController.isPressed(69))
+	{
+		physicsSystem.applyForce(vec3(0, 100, 0), 0)
+	}
+	)";
+	
+	scriptUpdater.load(source, e);
 	
 	size_t i = 0;
 	while(true)

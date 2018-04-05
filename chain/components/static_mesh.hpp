@@ -12,21 +12,9 @@
 
 #include "../math/vec.hpp"
 
-struct Material
-{
-    vec3 albedo;
-    float roughness;
-};
-
 struct StaticMesh
 {
-    struct Vertex
-    {
-        vec3 position;
-        vec3 normal;
-        vec2 uv;
-    };
-    
-    std::vector<Vertex> data;
-    Material material;
+	uint32_t vao = 0;
+	uint32_t vbo = 0;
+	uint32_t ibo = 0;
 };

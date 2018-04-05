@@ -27,8 +27,6 @@ public:
     Renderer(GLFWwindow* window);
     void operator()(World& world, double dt);
     
-    void setMesh(const ::StaticMesh& m, World::Entity e);
-    
 private:
     
     void createMeshForEntity(World::Entity);
@@ -38,5 +36,4 @@ private:
     std::vector<std::function<void(World&, double)>> stateUpdates;
     
     GLFWwindow* window = nullptr;
-    std::map<World::Entity, StaticMesh> staticMeshes;
 };

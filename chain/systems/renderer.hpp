@@ -9,17 +9,34 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include <map>
+#include <vector>
 
 #include "../world/world.hpp"
 
 class Renderer
 {
 public:
-    Renderer(GLFWwindow* window);
     
+    struct StaticMesh
+    {
+        GLuint vao;
+        GLuint vbo;
+    };
+    
+    Renderer(GLFWwindow* window);
     void operator()(World& world, double dt);
+    
+    void setMesh(const ::StaticMesh& m, World::Entity e);
     
 private:
     
+    void createMeshForEntity(World::Entity);
+    
+private:
+    
+    std::vector<std::function<void(World&, double)>> stateUpdates;
+    
     GLFWwindow* window = nullptr;
+    std::map<World::Entity, StaticMesh> staticMeshes;
 };

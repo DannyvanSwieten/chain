@@ -42,6 +42,7 @@
 		3087373E206D0FAF00642A69 /* component_storage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = component_storage.hpp; sourceTree = "<group>"; };
 		3087373F206D2CEA00642A69 /* world.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = world.cpp; sourceTree = "<group>"; };
 		30873740206D2CEA00642A69 /* world.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = world.hpp; sourceTree = "<group>"; };
+		FA579FDA207540D600F59139 /* static_mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = static_mesh.hpp; sourceTree = "<group>"; };
 		FAC38E5B206E963F00E1778A /* components.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = components.hpp; sourceTree = "<group>"; };
 		FAC38E5D206E966700E1778A /* transform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = transform.hpp; sourceTree = "<group>"; };
 		FAC38E5E206E96E100E1778A /* vec.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec.hpp; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 				FAC38E5D206E966700E1778A /* transform.hpp */,
 				305F3E822073BB8B00EE1FF6 /* bounding_box.hpp */,
 				305F3E832073D67A00EE1FF6 /* spring_joint.hpp */,
+				FA579FDA207540D600F59139 /* static_mesh.hpp */,
 			);
 			path = components;
 			sourceTree = "<group>";

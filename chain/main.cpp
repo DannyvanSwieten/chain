@@ -55,11 +55,13 @@ int main(int argc, const char * argv[]) {
     collision.setBoundingVolume({50, 50, 50}, object);
     
     const auto object2 = w.createEntity();
+    w.attach<StaticMesh>(object2);
     w.attach<RigidBody>(object2);
     w.attach<BoundingBox>(object2);
     w.attach<SpringJoint>(object2);
     w.setPosition({0, 100, 0}, object2);
     
+    renderer.setMesh(StaticMesh(), object2);
     physics.setMass(100.0, object2);
     collision.setBoundingVolume({50, 50, 50}, object2);
 	

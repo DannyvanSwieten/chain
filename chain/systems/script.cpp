@@ -8,6 +8,19 @@
 
 #include "script.hpp"
 
+const std::string CreatorTemplate = R"(
+// this lambda function is the last statement and therefor its value is simply
+// returned when the script is done executing
+fun() {
+  var f = fun(obj, self, timestep) {
+	  obj.update(self, timestep)
+	  return obj;
+  }
+  var s = <<SCRIPT_NAME>>();
+  return bind(f, s, _, _)
+}
+)";
+
 ScriptUpdater::ScriptUpdater()
 {
 	chai.add(chaiscript::user_type<MeshFilter>(), "MeshFilter");
@@ -37,16 +50,40 @@ void ScriptUpdater::operator()(World& w, double dt) {
 	for(auto& update: stateUpdates)
 		update(w, dt);
 	
+	stateUpdates.clear();
+	
 	entitiesToUpdate.clear();
 	w.getAllEntitiesWithComponents<Script>(entitiesToUpdate);
 	auto& scripts = w.getAll<Script>();
 	for(auto e: entitiesToUpdate)
-		chai.eval(scripts[e]->source);
+	{
+		auto& script = scripts[e];
+		if(script->update)
+			script->update(e, dt);
+	}
 }
 
-void ScriptUpdater::load(const std::string& source, World::Entity e)
+void ScriptUpdater::load(const std::string& path, World::Entity e)
 {
-	stateUpdates.emplace_back([source, e](World& w, double dt){
-		w.getAll<Script>()[e]->source = source;
+	stateUpdates.emplace_back([&, path, e](World& w, double dt)
+	{
+		const auto slashPos = path.find_last_of("/");
+		const auto name = path.substr(slashPos + 1, path.size() - 6 - slashPos).substr();
+		if(creators.find(name) == creators.end())
+		{
+			chai.eval_file(path);
+			
+			auto t = CreatorTemplate;
+			const std::string toReplace = "<<SCRIPT_NAME>>";
+			const auto pos = CreatorTemplate.find(toReplace);
+			const auto source = t.replace(pos, toReplace.size(), name);
+			
+			auto creator = chai.eval<std::function<std::function<void (size_t, double)> (void)>>(source);
+			
+			creators.emplace(name, creator);
+		}
+		
+		auto& script = w.getAll<Script>()[e];
+		script->update = creators[name]();
 	});
 }

@@ -56,17 +56,13 @@ int main(int argc, const char * argv[]) {
 	w.addUpdater(std::ref(input));
     
     const auto e = w.createEntity();
-	w.attach<RigidBody>(e);
 	w.attach<Script>(e);
 	
-	const std::string source = R"(
-	if(inputController.isPressed(69))
-	{
-		physicsSystem.applyForce(vec3(0, 100, 0), 0)
-	}
-	)";
+	const auto e2 = w.createEntity();
+	w.attach<Script>(e2);
 	
-	scriptUpdater.load(source, e);
+	scriptUpdater.load("/Users/danny/Desktop/Behaviour.chai", e);
+	scriptUpdater.load("/Users/danny/Desktop/Behaviour.chai", e2);
 	
 	size_t i = 0;
 	while(true)

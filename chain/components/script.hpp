@@ -8,9 +8,10 @@
 
 #pragma once
 
+#include <functional>
 #include <string>
 
 struct Script
 {
-	std::string source;
+	std::function<void(size_t, double)> update;
 };

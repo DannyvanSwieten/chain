@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <map>
 #include <chaiscript/chaiscript.hpp>
 
 #include "../world/world.hpp"
@@ -29,7 +30,9 @@ public:
 private:
 	
 	chaiscript::ChaiScript chai;
+	
 	std::vector<World::Entity> entitiesToUpdate;
 	
 	std::vector<std::function<void(World&, double)>> stateUpdates;
+	std::map<std::string, std::function<std::function<void (size_t, double)> (void)>> creators;
 };

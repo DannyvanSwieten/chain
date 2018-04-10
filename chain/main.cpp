@@ -57,6 +57,9 @@ int main(int argc, const char * argv[]) {
 	scriptUpdater.getContext().add_global(chaiscript::var(std::ref(physics)), "physicsSystem");
 	scriptUpdater.getContext().add(chaiscript::fun(&PhysicsUpdater::applyForce), "applyForce");
 	
+	scriptUpdater.getContext().add_global(chaiscript::var(std::ref(collision)), "collisionSystem");
+	scriptUpdater.getContext().add(chaiscript::fun(&CollisionUpdater::registerCollisionProbe), "registerCollisionProbe");
+	
 	w.addUpdater(std::ref(renderer));
 	w.addUpdater(std::ref(scriptUpdater));
 	w.addUpdater(std::ref(meshUpdater));

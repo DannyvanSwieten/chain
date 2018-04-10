@@ -16,6 +16,7 @@ public:
 	
 	void operator()(World& w, double dt);
 	void setBoundingVolume(const vec3& bounds, World::Entity e);
+	void registerCollisionProbe(World::Entity e, std::function<void(World::Entity, World::Entity)> f);
 	
 private:
 	
@@ -25,4 +26,5 @@ private:
 	
 	std::vector<World::Entity> entitiesToUpdate;
 	std::vector<std::function<void(World&, double)>> stateUpdates;
+	std::map<World::Entity, std::function<void(World::Entity, World::Entity)>> collisionProbes;
 };

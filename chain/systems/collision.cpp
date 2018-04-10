@@ -41,7 +41,11 @@ void CollisionUpdater::operator()(World& w, double dt)
 			if(!collision)
 				continue;
 			
-			std::cout << "Collision of entity " << i << " with " << j << '\n';
+			if(collisionProbes.find(entitiesToUpdate[i]) != collisionProbes.end())
+				collisionProbes[i](i, j);
+			
+			if(collisionProbes.find(entitiesToUpdate[j]) != collisionProbes.end())
+				collisionProbes[j](j, i);
 		}
 	}
 }
@@ -58,3 +62,9 @@ void CollisionUpdater::updateState(World &w, double dt)
 	for(auto& update: stateUpdates)
 		update(w, dt);
 }
+
+void CollisionUpdater::registerCollisionProbe(World::Entity e, std::function<void (World::Entity, World::Entity)> f)
+{
+    collisionProbes[e] = f;
+}
+

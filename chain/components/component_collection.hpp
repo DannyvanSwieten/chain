@@ -15,5 +15,6 @@ using component_collection_t = ComponentStorageCollection
 <
 	Transform,
 	RigidBody, BoundingBox, SpringJoint,
-	StaticMesh, MeshFilter, Script
+	StaticMesh,
+	Script
 >;

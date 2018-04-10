@@ -18,12 +18,6 @@ class Renderer
 {
 public:
     
-    struct StaticMesh
-    {
-        GLuint vao;
-        GLuint vbo;
-    };
-    
     Renderer(GLFWwindow* window);
     void operator()(World& world, double dt);
     

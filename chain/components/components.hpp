@@ -10,7 +10,6 @@
 
 #include "bounding_box.hpp"
 #include "rigid_body.hpp"
-#include "mesh_filter.hpp"
 #include "script.hpp"
 #include "spring_joint.hpp"
 #include "static_mesh.hpp"

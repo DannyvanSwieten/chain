@@ -36,7 +36,7 @@ void PhysicsUpdater::operator()(World& w, double dt)
         body->momentum.y += -9.8 * dt;
 		transform->position += body->velocity * dt;
 		
-		std::cout << transform->position << std::endl;
+//		std::cout << transform->position << std::endl;
 	}
 }
 

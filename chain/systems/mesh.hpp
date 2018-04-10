@@ -10,6 +10,8 @@
 
 #include "../world/world.hpp"
 
+#include "mesh_filter.hpp"
+
 class StaticMeshUpdater
 {
 public:
@@ -22,12 +24,12 @@ public:
 	};
 	
 	void operator()(World&, double);
-	void updateMesh(World::Entity e);
+	void updateMesh(World::Entity e, const MeshFilter& filter);
 	
 private:
 	
 	void createMeshForEntity(World& w, World::Entity e);
-	void updateMeshFromFilter(World& w, World::Entity e);
+	void updateMeshFromFilter(const MeshFilter& filter, World& w, World::Entity e);
 	
 private:
 	

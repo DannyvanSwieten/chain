@@ -17,4 +17,6 @@ struct MeshFilter
 	std::vector<vec3> positions;
 	std::vector<vec3> normals;
 	std::vector<vec2> uv;
+	
+	std::vector<vec3i> faces;
 };

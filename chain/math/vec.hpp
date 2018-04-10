@@ -15,3 +15,7 @@
 using vec2 = math::Vector2<math_precision_t>;
 using vec3 = math::Vector3<math_precision_t>;
 using vec4 = math::Vector4<math_precision_t>;
+
+using vec2i = math::Vector2<uint32_t>;
+using vec3i = math::Vector3<uint32_t>;
+using vec4i = math::Vector4<uint32_t>;

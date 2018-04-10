@@ -43,23 +43,30 @@ int main(int argc, const char * argv[]) {
 	CollisionUpdater collision;
 	StaticMeshUpdater meshUpdater;
 	ScriptUpdater scriptUpdater;
-	scriptUpdater.getContext().add(chaiscript::fun(&InputUpdater::isPressed), "isPressed");
+	
+	scriptUpdater.getContext().add_global(chaiscript::var(std::ref(meshUpdater)), "meshSystem");
+	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::updateMesh), "updateMesh");
+	
 	scriptUpdater.getContext().add(chaiscript::var(std::ref(input)), "inputController");
+	scriptUpdater.getContext().add(chaiscript::fun(&InputUpdater::isPressed), "isPressed");
+	
 	scriptUpdater.getContext().add(chaiscript::var(std::ref(physics)), "physicsSystem");
 	scriptUpdater.getContext().add(chaiscript::fun(&PhysicsUpdater::applyForce), "applyForce");
 	
+	w.addUpdater(std::ref(renderer));
 	w.addUpdater(std::ref(scriptUpdater));
 	w.addUpdater(std::ref(meshUpdater));
     w.addUpdater(std::ref(collision));
     w.addUpdater(std::ref(physics));
-	w.addUpdater(std::ref(renderer));
 	w.addUpdater(std::ref(input));
     
     const auto e = w.createEntity();
 	w.attach<Script>(e);
+	w.attach<RigidBody>(e);
 	
 	const auto e2 = w.createEntity();
 	w.attach<Script>(e2);
+	w.attach<RigidBody>(e2);
 	
 	scriptUpdater.load("/Users/danny/Desktop/Behaviour.chai", e);
 	scriptUpdater.load("/Users/danny/Desktop/Behaviour.chai", e2);

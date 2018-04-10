@@ -51,10 +51,10 @@ int main(int argc, const char * argv[]) {
 	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec3>), "setMaterialProperty");
 	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec4>), "setMaterialProperty");
 	
-	scriptUpdater.getContext().add(chaiscript::var(std::ref(input)), "inputController");
+	scriptUpdater.getContext().add_global(chaiscript::var(std::ref(input)), "inputController");
 	scriptUpdater.getContext().add(chaiscript::fun(&InputUpdater::isPressed), "isPressed");
 	
-	scriptUpdater.getContext().add(chaiscript::var(std::ref(physics)), "physicsSystem");
+	scriptUpdater.getContext().add_global(chaiscript::var(std::ref(physics)), "physicsSystem");
 	scriptUpdater.getContext().add(chaiscript::fun(&PhysicsUpdater::applyForce), "applyForce");
 	
 	w.addUpdater(std::ref(renderer));

@@ -15,8 +15,8 @@ class PhysicsUpdater
 public:
 	void operator()(World& w, double dt);
 	
-	void applyForce(const vec3& F, World::Entity e);
-	void setMass(math_precision_t mass, World::Entity e);
+	void applyForce(World::Entity e, const vec3& F);
+	void setMass(World::Entity e, math_precision_t mass);
 	
 private:
 	

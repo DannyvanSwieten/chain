@@ -40,14 +40,14 @@ void PhysicsUpdater::operator()(World& w, double dt)
 	}
 }
 
-void PhysicsUpdater::applyForce(const vec3& F, World::Entity e)
+void PhysicsUpdater::applyForce(World::Entity e, const vec3& F)
 {
 	stateUpdates.emplace_back([F, e] (World& w, double dt) {
 		w.getAll<RigidBody>()[e]->momentum += F * dt;
 	});
 }
 
-void PhysicsUpdater::setMass(math_precision_t mass, World::Entity e)
+void PhysicsUpdater::setMass(World::Entity e, math_precision_t mass)
 {
 	assert(mass != 0.0);
 	

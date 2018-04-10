@@ -192,3 +192,4 @@ void StaticMeshUpdater::updateMeshFromFilter(const MeshFilter& filter, World& w,
 	mesh->numFaces = filter.faces.size();
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+

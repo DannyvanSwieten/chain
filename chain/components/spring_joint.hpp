@@ -16,5 +16,5 @@ struct SpringJoint
 	vec3 attachedAnchor;
 	
 	math_precision_t k = 10;
-	math_precision_t b = 10;
+	math_precision_t b = 1;
 };

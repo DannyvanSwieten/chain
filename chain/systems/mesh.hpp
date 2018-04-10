@@ -25,6 +25,15 @@ public:
 	
 	void operator()(World&, double);
 	void updateMesh(World::Entity e, const MeshFilter& filter);
+	void setMaterialProperty(World::Entity e, const std::string& name, float);
+	
+	template<typename T>
+	void setMaterialProperty(World::Entity e, const std::string& name, const T& value)
+	{
+		updates.emplace_back([e, name, value](World& w, double dt) {
+			w.getAll<StaticMesh>()[e]->material.properties[name] = value;
+		});
+	}
 	
 private:
 	

@@ -46,6 +46,10 @@ int main(int argc, const char * argv[]) {
 	
 	scriptUpdater.getContext().add_global(chaiscript::var(std::ref(meshUpdater)), "meshSystem");
 	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::updateMesh), "updateMesh");
+	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<float>), "setMaterialProperty");
+	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec2>), "setMaterialProperty");
+	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec3>), "setMaterialProperty");
+	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec4>), "setMaterialProperty");
 	
 	scriptUpdater.getContext().add(chaiscript::var(std::ref(input)), "inputController");
 	scriptUpdater.getContext().add(chaiscript::fun(&InputUpdater::isPressed), "isPressed");
@@ -63,13 +67,11 @@ int main(int argc, const char * argv[]) {
     const auto e = w.createEntity();
 	w.attach<Script>(e);
 	w.attach<RigidBody>(e);
+	w.attach<SpringJoint>(e);
 	
-	const auto e2 = w.createEntity();
-	w.attach<Script>(e2);
-	w.attach<RigidBody>(e2);
+	w.setPosition({0, 5, 0}, e);
 	
 	scriptUpdater.load("/Users/danny/Desktop/Behaviour.chai", e);
-	scriptUpdater.load("/Users/danny/Desktop/Behaviour.chai", e2);
 	
 	size_t i = 0;
 	while(true)

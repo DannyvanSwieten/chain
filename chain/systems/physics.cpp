@@ -33,7 +33,7 @@ void PhysicsUpdater::operator()(World& w, double dt)
 		}
 		
 		body->velocity = body->momentum * body->invMass;
-        body->momentum.y += -9.8 * dt;
+//        body->momentum.y += -9.8 * dt;
 		transform->position += body->velocity * dt;
 		
 //		std::cout << transform->position << std::endl;

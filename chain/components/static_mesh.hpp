@@ -8,9 +8,13 @@
 
 #pragma once
 
+#include <boost/variant.hpp>
+#include <map>
 #include <vector>
 
 #include "../math/vec.hpp"
+
+using uniform_t = boost::variant<float, vec2, vec3, vec4>;
 
 struct Material
 {
@@ -18,7 +22,7 @@ struct Material
 	uint32_t fragmentShader = 0;
 	uint32_t program 		= 0;
 	
-	vec3 albedo{0.3, 0.7, 0.5};
+	std::map<std::string, uniform_t> properties;
 };
 
 struct StaticMesh

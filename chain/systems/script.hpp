@@ -34,5 +34,5 @@ private:
 	std::vector<World::Entity> entitiesToUpdate;
 	
 	std::vector<std::function<void(World&, double)>> stateUpdates;
-	std::map<std::string, std::function<std::function<void (size_t, double)> (void)>> creators;
+	std::map<std::string, std::function<std::function<void (size_t, double)> (World::Entity)>> creators;
 };

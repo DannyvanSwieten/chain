@@ -43,9 +43,9 @@ void Renderer::operator()(World &w, double dt)
 		model[3][1] = t->position.y;
 		model[3][2] = t->position.z;
 		
-		auto location = glGetUniformLocation(mat.program, "albedo");
-		glUniform3f(location, mat.albedo.r, mat.albedo.g, mat.albedo.b);
+		setUniforms(mat);
 		
+		int32_t location = -1;
 		location = glGetUniformLocation(mat.program, "modelMatrix");
 		glUniformMatrix4fv(location, 1, false, &model[0][0]);
 		
@@ -57,4 +57,13 @@ void Renderer::operator()(World &w, double dt)
     glfwSwapBuffers(window);
 	
 	stateUpdates.clear();
+}
+
+void Renderer::setUniforms(const Material& material)
+{
+	for(const auto& uniform: material.properties)
+	{
+		UniformVisitor v(material.program, uniform.first);
+		boost::apply_visitor(v, uniform.second);
+	}
 }

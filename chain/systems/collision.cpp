@@ -32,14 +32,16 @@ void CollisionUpdater::operator()(World& w, double dt)
 			const size_t index = j % boxes.size();
 			auto& b = boxes[index];
 			
-			bool x = std::fabs(a->center.x - b->center.x) < std::fabs(a->radi.x + b->radi.x);
-			bool y = std::fabs(a->center.y - b->center.y) < std::fabs(a->radi.y + b->radi.y);
-			bool z = std::fabs(a->center.z - b->center.z) < std::fabs(a->radi.z + b->radi.z);
+			const auto x = std::fabs(a->center.x - b->center.x) - std::fabs(a->radi.x + b->radi.x);
+			const auto y = std::fabs(a->center.y - b->center.y) - std::fabs(a->radi.y + b->radi.y);
+			const auto z = std::fabs(a->center.z - b->center.z) - std::fabs(a->radi.z + b->radi.z);
 			
-			bool collision = x & y & z;
+			bool collision = x < 0 & y < 0 & z < 0;
 			
 			if(!collision)
 				continue;
+			
+			vec3 distance = vec3{fabs(x), fabs(y), fabs(z)};
 			
 			if(collisionProbes.find(entitiesToUpdate[i]) != collisionProbes.end())
 				collisionProbes[i](i, j);

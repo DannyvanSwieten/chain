@@ -43,6 +43,10 @@ void Renderer::operator()(World &w, double dt)
 		model[3][1] = t->position.y;
 		model[3][2] = t->position.z;
 		
+		model[0][0] = t->scale.x;
+		model[1][1] = t->scale.y;
+		model[2][2] = t->scale.z;
+		
 		setUniforms(mat);
 		
 		int32_t location = -1;

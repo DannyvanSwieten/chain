@@ -43,26 +43,26 @@ void World::freeEntity(Entity Entity)
 	numEntitys--;
 }
 
-void World::setPosition(const vec3 &position, Entity e)
+void World::setName(Entity e, const std::string &name)
+{
+	entityNames[e] = name;
+}
+
+void World::setPosition(Entity e, const vec3 &position)
 {
     getAll<Transform>()[e]->position = position;
 }
 
-void World::setRotation(const vec3 &rotation, Entity e)
+void World::setRotation(Entity e, const vec3 &rotation)
 {
     getAll<Transform>()[e]->rotation = rotation;
 }
 
-void World::setScale(const vec3 &scale, Entity e)
+void World::setScale(Entity e, const vec3 &scale)
 {
     getAll<Transform>()[e]->scale = scale;
     if(has<BoundingBox>(e))
         getAll<BoundingBox>()[e]->radi *= scale;
-}
-
-void World::registerKeyPress(int key)
-{
-    
 }
 
 void World::addUpdater(std::function<void(World&, double)> updater)

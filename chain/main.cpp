@@ -68,10 +68,23 @@ int main(int argc, const char * argv[]) {
 	w.attach<Script>(e);
 	w.attach<RigidBody>(e);
 	w.attach<SpringJoint>(e);
+	w.attach<BoundingBox>(e);
 	
-	w.setPosition({0, 5, 0}, e);
+	w.setPosition(e, {0.5, 5, 0});
+	w.setScale(e, {0.5, 0.5, 0.5});
 	
 	scriptUpdater.load("/Users/danny/Desktop/Behaviour.chai", e);
+	
+	const auto e2 = w.createEntity();
+	w.attach<Script>(e2);
+	w.attach<RigidBody>(e2);
+	w.attach<SpringJoint>(e2);
+	w.attach<BoundingBox>(e2);
+	
+	w.setPosition(e2, {-0.5, -5, 0});
+	w.setScale(e2, {0.5, 0.5, 0.5});
+	
+	scriptUpdater.load("/Users/danny/Desktop/Behaviour2.chai", e2);
 	
 	size_t i = 0;
 	while(true)

@@ -88,8 +88,8 @@ void ScriptUpdater::operator()(World& w, double dt) {
 		{
 			try {
 				script->update(e, dt);
-			}catch(std::exception& e) {
-				std::cout << e.what() << '\n';
+			}catch(chaiscript::exception::eval_error& e) {
+				std::cout << e.pretty_print();
 				script->update = nullptr;
 			}
 		}
@@ -104,16 +104,23 @@ void ScriptUpdater::load(const std::string& path, World::Entity e)
 		const auto name = path.substr(slashPos + 1, path.size() - 6 - slashPos).substr();
 		if(creators.find(name) == creators.end())
 		{
-			chai.eval_file(path);
-			
-			auto t = CreatorTemplate;
-			const std::string toReplace = "<<SCRIPT_NAME>>";
-			const auto pos = CreatorTemplate.find(toReplace);
-			const auto source = t.replace(pos, toReplace.size(), name);
-			
-			auto creator = chai.eval<std::function<std::function<void (size_t, double)> (World::Entity)>>(source);
-			
-			creators.emplace(name, creator);
+			try {
+				
+				chai.eval_file(path);
+				auto t = CreatorTemplate;
+				const std::string toReplace = "<<SCRIPT_NAME>>";
+				const auto pos = CreatorTemplate.find(toReplace);
+				const auto source = t.replace(pos, toReplace.size(), name);
+				
+				auto creator = chai.eval<std::function<std::function<void (size_t, double)> (World::Entity)>>(source);
+				
+				creators.emplace(name, creator);
+				
+			} catch(chaiscript::exception::eval_error& e) {
+				
+				std::cout << e.pretty_print();
+				return;
+			}
 		}
 		
 		auto& script = w.getAll<Script>()[e];

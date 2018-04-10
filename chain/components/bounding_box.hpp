@@ -13,5 +13,5 @@
 struct BoundingBox
 {
 	vec3 center;
-	vec3 radi;
+	vec3 radi{0.5, 0.5, 0.5};
 };

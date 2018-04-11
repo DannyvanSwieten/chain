@@ -58,6 +58,7 @@ public:
 private:
     
     void createMeshForEntity(World::Entity);
+    void renderStaticMeshes(World& world, double dt);
     
 private:
     

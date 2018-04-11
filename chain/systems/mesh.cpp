@@ -155,20 +155,22 @@ void StaticMeshUpdater::createMeshForEntity(World& w, World::Entity e)
 		
 		std::cout << '\n';
 	}
+    
+    auto error = glGetError();
+    assert(error == GL_NO_ERROR);
 }
 
 void StaticMeshUpdater::updateMeshFromFilter(const MeshFilter& filter, World& w, World::Entity e)
 {
 	auto& mesh = w.getAll<StaticMesh>()[e];
-	
-	auto error = glGetError();
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo);
 	glBufferData(GL_ARRAY_BUFFER, filter.positions.size() * sizeof(Vertex), nullptr, GL_STATIC_DRAW);
 	
-	error = glGetError();
-	
 	Vertex* vertices = static_cast<Vertex*>(glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE));
+    if(!vertices)
+        return;
+    
 	assert(vertices);
 	
 	auto& pos = filter.positions;

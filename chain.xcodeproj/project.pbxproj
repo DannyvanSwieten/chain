@@ -16,6 +16,7 @@
 		FADFA9632074B99F001351CF /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADFA9612074B99F001351CF /* input.cpp */; };
 		FADFA9662074C00A001351CF /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADFA9642074C00A001351CF /* renderer.cpp */; };
 		FADFA9692074C138001351CF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADFA9682074C138001351CF /* OpenGL.framework */; };
+		FAE0819B207DFEF9000BA909 /* camera_system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FAE08199207DFEF9000BA909 /* camera_system.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -61,6 +62,9 @@
 		FADFA9642074C00A001351CF /* renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = renderer.cpp; sourceTree = "<group>"; };
 		FADFA9652074C00A001351CF /* renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = renderer.hpp; sourceTree = "<group>"; };
 		FADFA9682074C138001351CF /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		FAE08198207DFAD3000BA909 /* camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = camera.hpp; sourceTree = "<group>"; };
+		FAE08199207DFEF9000BA909 /* camera_system.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = camera_system.cpp; sourceTree = "<group>"; };
+		FAE0819A207DFEF9000BA909 /* camera_system.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = camera_system.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +94,8 @@
 				3064E9A32076002E005DBEBD /* mesh.hpp */,
 				3064E9A720762210005DBEBD /* script.cpp */,
 				3064E9A820762210005DBEBD /* script.hpp */,
+				FAE08199207DFEF9000BA909 /* camera_system.cpp */,
+				FAE0819A207DFEF9000BA909 /* camera_system.hpp */,
 			);
 			path = systems;
 			sourceTree = "<group>";
@@ -136,6 +142,7 @@
 				FA579FDA207540D600F59139 /* static_mesh.hpp */,
 				3064E9A52076012C005DBEBD /* mesh_filter.hpp */,
 				3064E9A620762191005DBEBD /* script.hpp */,
+				FAE08198207DFAD3000BA909 /* camera.hpp */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -225,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3064E9A920762210005DBEBD /* script.cpp in Sources */,
+				FAE0819B207DFEF9000BA909 /* camera_system.cpp in Sources */,
 				30873741206D2CEA00642A69 /* world.cpp in Sources */,
 				FADFA9632074B99F001351CF /* input.cpp in Sources */,
 				305F3E7E20738F9800EE1FF6 /* physics.cpp in Sources */,
@@ -358,7 +366,9 @@
 		3070FD98206A83C2000287DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -366,7 +376,9 @@
 		3070FD99206A83C2000287DF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

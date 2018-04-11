@@ -10,6 +10,7 @@
 #include <queue>
 
 #include "world.hpp"
+#include "systems/camera_system.hpp"
 #include "systems/physics.hpp"
 #include "systems/collision.hpp"
 #include "systems/input.hpp"
@@ -38,6 +39,7 @@ int main(int argc, const char * argv[]) {
     
     World w(10);
     Renderer renderer(window);
+    CameraUpdater cameraUpdater;
     InputUpdater input(window);
 	PhysicsUpdater physics;
 	CollisionUpdater collision;
@@ -50,6 +52,11 @@ int main(int argc, const char * argv[]) {
 	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec2>), "setMaterialProperty");
 	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec3>), "setMaterialProperty");
 	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec4>), "setMaterialProperty");
+    
+    scriptUpdater.getContext().add_global(chaiscript::var(std::ref(cameraUpdater)), "cameraSystem");
+    scriptUpdater.getContext().add(chaiscript::fun(&CameraUpdater::setFieldOfView), "setFieldOfView");
+    scriptUpdater.getContext().add(chaiscript::fun(&CameraUpdater::setFieldOfView), "setZNear");
+    scriptUpdater.getContext().add(chaiscript::fun(&CameraUpdater::setFieldOfView), "setZFar");
 	
 	scriptUpdater.getContext().add_global(chaiscript::var(std::ref(input)), "inputController");
 	scriptUpdater.getContext().add(chaiscript::fun(&InputUpdater::isPressed), "isPressed");
@@ -76,7 +83,7 @@ int main(int argc, const char * argv[]) {
 	w.setPosition(e, {0.5, 5, 0});
 	w.setScale(e, {0.5, 0.5, 0.5});
 	
-	scriptUpdater.load("/Users/danny/Desktop/Behaviour.chai", e);
+    scriptUpdater.load("/Users/dannyvanswieten/Desktop/RedSquare.chai", e);
 	
 	const auto e2 = w.createEntity();
 	w.attach<Script>(e2);
@@ -87,7 +94,7 @@ int main(int argc, const char * argv[]) {
 	w.setPosition(e2, {-0.5, -5, 0});
 	w.setScale(e2, {0.5, 0.5, 0.5});
 	
-	scriptUpdater.load("/Users/danny/Desktop/Behaviour2.chai", e2);
+    scriptUpdater.load("/Users/dannyvanswieten/Desktop/GreenSquare.chai", e2);
 	
 	size_t i = 0;
 	while(true)

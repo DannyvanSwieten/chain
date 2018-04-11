@@ -23,40 +23,8 @@ void Renderer::operator()(World &w, double dt)
     
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	std::vector<World::Entity> entities;
-	w.getAllEntitiesWithComponents<Transform, StaticMesh>(entities);
-	const auto& transforms = w.getAll<Transform>();
-	const auto& meshes = w.getAll<StaticMesh>();
-	
-	for(const auto e: entities)
-	{
-		const auto& t = transforms[e];
-		const auto& m = meshes[e];
-		const auto& mat = m->material;
-		
-		glBindVertexArray(m->vao);
-		glUseProgram(mat.program);
-		
-		mat4 model = mat4::IDENTITY;
-		model[3][0] = t->position.x;
-		model[3][1] = t->position.y;
-		model[3][2] = t->position.z;
-		
-		model[0][0] = t->scale.x;
-		model[1][1] = t->scale.y;
-		model[2][2] = t->scale.z;
-		
-		setUniforms(mat);
-		
-		int32_t location = -1;
-		location = glGetUniformLocation(mat.program, "modelMatrix");
-		glUniformMatrix4fv(location, 1, false, &model[0][0]);
-		
-		glDrawElements(GL_TRIANGLES, m->numFaces * 3, GL_UNSIGNED_INT, (void*)0);
-		glUseProgram(0);
-		glBindVertexArray(0);
-	}
+    
+    renderStaticMeshes(w, dt);
 	
     glfwSwapBuffers(window);
 	
@@ -70,4 +38,44 @@ void Renderer::setUniforms(const Material& material)
 		UniformVisitor v(material.program, uniform.first);
 		boost::apply_visitor(v, uniform.second);
 	}
+}
+
+void Renderer::renderStaticMeshes(World &w, double dt)
+{
+    std::vector<World::Entity> entities;
+    w.getAllEntitiesWithComponents<Transform, StaticMesh>(entities);
+    const auto& transforms = w.getAll<Transform>();
+    const auto& meshes = w.getAll<StaticMesh>();
+    
+    for(const auto e: entities)
+    {
+        const auto& t = transforms[e];
+        const auto& m = meshes[e];
+        const auto& mat = m->material;
+        
+        glBindVertexArray(m->vao);
+        glUseProgram(mat.program);
+        
+        mat4 model = mat4::IDENTITY;
+        model[3][0] = t->position.x;
+        model[3][1] = t->position.y;
+        model[3][2] = t->position.z;
+        
+        model[0][0] = t->scale.x;
+        model[1][1] = t->scale.y;
+        model[2][2] = t->scale.z;
+        
+        setUniforms(mat);
+        
+        int32_t location = -1;
+        location = glGetUniformLocation(mat.program, "modelMatrix");
+        glUniformMatrix4fv(location, 1, false, &model[0][0]);
+        
+        location = glGetUniformLocation(mat.program, "viewMatrix");
+        
+        
+        glDrawElements(GL_TRIANGLES, m->numFaces * 3, GL_UNSIGNED_INT, (void*)0);
+        glUseProgram(0);
+        glBindVertexArray(0);
+    }
 }

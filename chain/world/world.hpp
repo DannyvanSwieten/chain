@@ -73,6 +73,10 @@ public:
 	void addUpdater(std::function<void(World&, double)> updater);
 	
 	void update(double);
+    
+public:
+    
+    Camera* mainCamera = nullptr;
 	
 private:
 	

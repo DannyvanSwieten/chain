@@ -16,5 +16,6 @@ using component_collection_t = ComponentStorageCollection
 	Transform,
 	RigidBody, BoundingBox, SpringJoint,
 	StaticMesh,
-	Script
+	Script,
+    Camera
 >;

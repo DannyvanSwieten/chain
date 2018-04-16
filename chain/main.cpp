@@ -32,7 +32,7 @@ int main(int argc, const char * argv[]) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     
     GLFWwindow* window = nullptr;
-    window = glfwCreateWindow(800, 600, "Ja toch", nullptr, nullptr);
+    window = glfwCreateWindow(1080, 720, "Ja toch", nullptr, nullptr);
     assert(window);
     
     glfwShowWindow(window);
@@ -45,6 +45,11 @@ int main(int argc, const char * argv[]) {
 	CollisionUpdater collision;
 	StaticMeshUpdater meshUpdater;
 	ScriptUpdater scriptUpdater;
+    
+    scriptUpdater.getContext().add_global(chaiscript::var(w), "world");
+    scriptUpdater.getContext().add(chaiscript::fun(&World::getEntityByName), "getEntityByName");
+    scriptUpdater.getContext().add(chaiscript::fun(&World::setPosition), "setPosition");
+    scriptUpdater.getContext().add((chaiscript::fun(&World::getPosition)), "getPosition");
 	
 	scriptUpdater.getContext().add_global(chaiscript::var(std::ref(meshUpdater)), "meshSystem");
 	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::updateMesh), "updateMesh");
@@ -54,9 +59,11 @@ int main(int argc, const char * argv[]) {
 	scriptUpdater.getContext().add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec4>), "setMaterialProperty");
     
     scriptUpdater.getContext().add_global(chaiscript::var(std::ref(cameraUpdater)), "cameraSystem");
+    scriptUpdater.getContext().add(chaiscript::fun(&CameraUpdater::setMainCamera), "setMainCamera");
     scriptUpdater.getContext().add(chaiscript::fun(&CameraUpdater::setFieldOfView), "setFieldOfView");
     scriptUpdater.getContext().add(chaiscript::fun(&CameraUpdater::setFieldOfView), "setZNear");
     scriptUpdater.getContext().add(chaiscript::fun(&CameraUpdater::setFieldOfView), "setZFar");
+    scriptUpdater.getContext().add(chaiscript::fun(&CameraUpdater::lookAt), "lookAt");
 	
 	scriptUpdater.getContext().add_global(chaiscript::var(std::ref(input)), "inputController");
 	scriptUpdater.getContext().add(chaiscript::fun(&InputUpdater::isPressed), "isPressed");
@@ -69,6 +76,7 @@ int main(int argc, const char * argv[]) {
 	
 	w.addUpdater(std::ref(renderer));
 	w.addUpdater(std::ref(scriptUpdater));
+    w.addUpdater(std::ref(cameraUpdater));
 	w.addUpdater(std::ref(meshUpdater));
     w.addUpdater(std::ref(collision));
     w.addUpdater(std::ref(physics));
@@ -77,10 +85,11 @@ int main(int argc, const char * argv[]) {
     const auto e = w.createEntity();
 	w.attach<Script>(e);
 	w.attach<RigidBody>(e);
-	w.attach<SpringJoint>(e);
+//    w.attach<SpringJoint>(e);
 	w.attach<BoundingBox>(e);
+    w.attach<Camera>(e);
 	
-	w.setPosition(e, {0.5, 5, 0});
+	w.setPosition(e, {0.0, 0, -5});
 	w.setScale(e, {0.5, 0.5, 0.5});
 	
     scriptUpdater.load("/Users/dannyvanswieten/Desktop/RedSquare.chai", e);
@@ -88,10 +97,10 @@ int main(int argc, const char * argv[]) {
 	const auto e2 = w.createEntity();
 	w.attach<Script>(e2);
 	w.attach<RigidBody>(e2);
-	w.attach<SpringJoint>(e2);
+//    w.attach<SpringJoint>(e2);
 	w.attach<BoundingBox>(e2);
 	
-	w.setPosition(e2, {-0.5, -5, 0});
+	w.setPosition(e2, {0, 0, 5});
 	w.setScale(e2, {0.5, 0.5, 0.5});
 	
     scriptUpdater.load("/Users/dannyvanswieten/Desktop/GreenSquare.chai", e2);

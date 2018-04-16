@@ -25,9 +25,13 @@ public:
 	void freeEntity(Entity entity);
 	
 	void setName(Entity e, const std::string& name);
+    void move(Entity e, const vec3 &offset);
     void setPosition(Entity e, const vec3& position);
+    const vec3& getPosition(Entity e);
     void setRotation(Entity e, const vec3& rotation);
     void setScale(Entity e, const vec3& scale);
+    
+    Entity getEntityByName(const std::string& name);
 	
 	template<class C>
 	void attach(Entity Entity)
@@ -83,6 +87,7 @@ private:
 	size_t numEntitys = 0;
 	std::queue<Entity> freeList;
 	component_collection_t collection;
+    
 	std::map<World::Entity, std::string> entityNames;
 	
 	std::vector<std::function<void(World&, double)>> updaters;

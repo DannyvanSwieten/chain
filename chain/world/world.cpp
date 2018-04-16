@@ -53,6 +53,16 @@ void World::setPosition(Entity e, const vec3 &position)
     getAll<Transform>()[e]->position = position;
 }
 
+const vec3& World::getPosition(Entity e)
+{
+    return getAll<Transform>()[e]->position;
+}
+
+void World::move(Entity e, const vec3 &offset)
+{
+    getAll<Transform>()[e]->position += offset;
+}
+
 void World::setRotation(Entity e, const vec3 &rotation)
 {
     getAll<Transform>()[e]->rotation = rotation;
@@ -63,6 +73,15 @@ void World::setScale(Entity e, const vec3 &scale)
     getAll<Transform>()[e]->scale = scale;
     if(has<BoundingBox>(e))
         getAll<BoundingBox>()[e]->radi *= scale;
+}
+
+World::Entity World::getEntityByName(const std::string &name)
+{
+    for(const auto& e: entityNames)
+        if(name == e.second)
+            return e.first;
+    
+    return -1;
 }
 
 void World::addUpdater(std::function<void(World&, double)> updater)

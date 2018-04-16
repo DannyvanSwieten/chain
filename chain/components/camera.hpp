@@ -14,6 +14,7 @@
 struct Camera
 {
     vec3 position;
+    vec3 target;
     vec3 up = vec3::UP;
     
     float fieldOfView = 65.0;
@@ -21,4 +22,5 @@ struct Camera
     float zFar = 100.0;
     
     mat4 viewMatrix = mat4::IDENTITY;
+    mat4 perspectiveMatrix;
 };

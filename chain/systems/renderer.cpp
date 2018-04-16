@@ -71,7 +71,14 @@ void Renderer::renderStaticMeshes(World &w, double dt)
         location = glGetUniformLocation(mat.program, "modelMatrix");
         glUniformMatrix4fv(location, 1, false, &model[0][0]);
         
-        location = glGetUniformLocation(mat.program, "viewMatrix");
+        if(w.mainCamera)
+        {
+            location = glGetUniformLocation(mat.program, "viewMatrix");
+            glUniformMatrix4fv(location, 1, false, &w.mainCamera->viewMatrix[0][0]);
+            
+            location = glGetUniformLocation(mat.program, "projectionMatrix");
+            glUniformMatrix4fv(location, 1, false, &w.mainCamera->perspectiveMatrix[0][0]);
+        }
         
         
         glDrawElements(GL_TRIANGLES, m->numFaces * 3, GL_UNSIGNED_INT, (void*)0);

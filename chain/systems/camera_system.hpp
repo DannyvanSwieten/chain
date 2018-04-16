@@ -16,9 +16,12 @@ public:
     
     void operator()(World& w, double dt);
     
+    void lookAt(World::Entity, const vec3& target);
     void setFieldOfView(World::Entity e, float fov);
     void setZNear(World::Entity e, float zNear);
     void setZFar(World::Entity e, float zFar);
+    
+    void setMainCamera(World::Entity e);
     
 private:
     

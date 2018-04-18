@@ -19,4 +19,6 @@ struct MeshFilter
 	std::vector<vec2> uv;
 	
 	std::vector<vec3i> faces;
+    
+    uint32_t primitiveType;
 };

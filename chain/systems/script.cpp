@@ -9,6 +9,8 @@
 #include "script.hpp"
 #include "mesh_filter.hpp"
 
+#include <OpenGL/gl3.h>
+
 const std::string CreatorTemplate = R"(
 // this lambda function is the last statement and therefor its value is simply
 // returned when the script is done executing
@@ -41,6 +43,7 @@ ScriptUpdater::ScriptUpdater()
 	chai.add(chaiscript::fun(&MeshFilter::normals), "normals");
 	chai.add(chaiscript::fun(&MeshFilter::uv), "uv");
 	chai.add(chaiscript::fun(&MeshFilter::faces), "faces");
+    chai.add(chaiscript::fun(&MeshFilter::primitiveType), "primitiveType");
 	
 	chai.add(chaiscript::fun([](vec2& lhs, const vec2& rhs){lhs = rhs;}), "=");
 	chai.add(chaiscript::constructor<vec2(float, float)>(), "Vec2");

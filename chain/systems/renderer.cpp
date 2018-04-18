@@ -53,6 +53,9 @@ void Renderer::renderStaticMeshes(World &w, double dt)
         const auto& m = meshes[e];
         const auto& mat = m->material;
         
+        if(!m->vao)
+            continue;
+        
         glBindVertexArray(m->vao);
         glUseProgram(mat.program);
         
@@ -80,8 +83,17 @@ void Renderer::renderStaticMeshes(World &w, double dt)
             glUniformMatrix4fv(location, 1, false, &w.mainCamera->perspectiveMatrix[0][0]);
         }
         
+        int ratio = 3;
+        if(m->primitiveType == GL_LINES)
+            ratio = 2;
+        else if(m->primitiveType == GL_POINTS)
+            ratio = 1;
         
-        glDrawElements(GL_TRIANGLES, m->numFaces * 3, GL_UNSIGNED_INT, (void*)0);
+        if(m->numFaces)
+            glDrawElements(m->primitiveType, m->numFaces * ratio, GL_UNSIGNED_INT, (void*)0);
+        else
+            glDrawArrays(m->primitiveType, 0, m->numVertices);
+        
         glUseProgram(0);
         glBindVertexArray(0);
     }

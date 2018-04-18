@@ -32,6 +32,10 @@ struct StaticMesh
 	uint32_t ibo = 0;
 	
 	uint32_t numFaces = 0;
+    uint32_t numVertices = 0;
+    uint32_t primitiveType;
 	
 	Material material;
+    
+    
 };

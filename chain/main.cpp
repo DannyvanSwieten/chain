@@ -46,6 +46,10 @@ int main(int argc, const char * argv[]) {
 	StaticMeshUpdater meshUpdater;
 	ScriptUpdater scriptUpdater;
     
+    scriptUpdater.getContext().add_global(chaiscript::const_var(GL_TRIANGLES), "TRIANGLES");
+    scriptUpdater.getContext().add_global(chaiscript::const_var(GL_LINES), "LINES");
+    scriptUpdater.getContext().add_global(chaiscript::const_var(GL_POINTS), "POINTS");
+    
     scriptUpdater.getContext().add_global(chaiscript::var(w), "world");
     scriptUpdater.getContext().add(chaiscript::fun(&World::getEntityByName), "getEntityByName");
     scriptUpdater.getContext().add(chaiscript::fun(&World::setPosition), "setPosition");
@@ -84,9 +88,6 @@ int main(int argc, const char * argv[]) {
     
     const auto e = w.createEntity();
 	w.attach<Script>(e);
-	w.attach<RigidBody>(e);
-//    w.attach<SpringJoint>(e);
-	w.attach<BoundingBox>(e);
     w.attach<Camera>(e);
 	
 	w.setPosition(e, {0.0, 0, -5});
@@ -94,23 +95,32 @@ int main(int argc, const char * argv[]) {
 	
     scriptUpdater.load("/Users/dannyvanswieten/Desktop/RedSquare.chai", e);
 	
-	const auto e2 = w.createEntity();
-	w.attach<Script>(e2);
-	w.attach<RigidBody>(e2);
-//    w.attach<SpringJoint>(e2);
-	w.attach<BoundingBox>(e2);
-	
-	w.setPosition(e2, {0, 0, 5});
-	w.setScale(e2, {0.5, 0.5, 0.5});
-	
-    scriptUpdater.load("/Users/dannyvanswieten/Desktop/GreenSquare.chai", e2);
-	
+    MeshFilter filter;
+    std::vector<vec3> positions;
+
+    for(auto i = 0; i < 1000; i++)
+    {
+        vec3 a{(rand() % 100) - 50, (rand() % 100) - 50, -5};
+
+        positions.emplace_back(a);
+    }
+
+    filter.positions = positions;
+    filter.primitiveType = GL_LINE_STRIP;
+
+    const auto e2 = w.createEntity();
+    meshUpdater.updateMesh(e2, filter);
+    meshUpdater.setMaterialProperty(e2, "albedo", vec3{1, 1, 1});
+
 	size_t i = 0;
-	while(true)
+	while(i < 60 * 5)
 	{
 		w.update(1.0 / 60);
 		i++;
 	}
+    
+    glfwTerminate();
+    glfwDestroyWindow(window);
 	
 	return 0;
 }

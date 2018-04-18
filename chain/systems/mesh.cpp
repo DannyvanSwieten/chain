@@ -71,6 +71,10 @@ void StaticMeshUpdater::createMeshForEntity(World& w, World::Entity e)
 	w.attach<StaticMesh>(e);
 	auto& m = w.getAll<StaticMesh>()[e];
 
+    m->primitiveType = GL_TRIANGLES;
+    uint32_t error = 0;
+    assert( (error = glGetError()) == GL_NO_ERROR);
+    
 	glGenVertexArrays(1, &m->vao);
 	glGenBuffers(1, &m->vbo);
 	glGenBuffers(1, &m->ibo);
@@ -97,6 +101,8 @@ void StaticMeshUpdater::createMeshForEntity(World& w, World::Entity e)
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    assert( (error = glGetError()) == GL_NO_ERROR);
 	
 	m->material.vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	m->material.fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -157,8 +163,7 @@ void StaticMeshUpdater::createMeshForEntity(World& w, World::Entity e)
 		std::cout << '\n';
 	}
     
-    auto error = glGetError();
-    assert(error == GL_NO_ERROR);
+//    assert( (error = glGetError()) == GL_NO_ERROR);
 }
 
 void StaticMeshUpdater::updateMeshFromFilter(const MeshFilter& filter, World& w, World::Entity e)
@@ -192,7 +197,9 @@ void StaticMeshUpdater::updateMeshFromFilter(const MeshFilter& filter, World& w,
 	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, filter.faces.size() * sizeof(vec3i), filter.faces.data(), GL_STATIC_DRAW);
-	mesh->numFaces = filter.faces.size();
+	mesh->numFaces = static_cast<uint32_t>(filter.faces.size());
+    mesh->numVertices = static_cast<uint32_t>(filter.positions.size());
+    mesh->primitiveType = filter.primitiveType;
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 

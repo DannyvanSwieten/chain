@@ -47,14 +47,11 @@ void main()
 
 void StaticMeshUpdater::operator()(World& w, double dt)
 { 
-	for(auto& update: updates)
-		update(w, dt);
-	
-	updates.clear();
+
 }
 
 void StaticMeshUpdater::updateMesh(World::Entity e, const MeshFilter& filter) {
-	updates.emplace_back([&, e](World& w, double dt) {
+	scheduleStateUpdate([&, e](World& w, double dt) {
 		
 		if(!w.has<StaticMesh>(e))
 		{
@@ -163,7 +160,7 @@ void StaticMeshUpdater::createMeshForEntity(World& w, World::Entity e)
 		std::cout << '\n';
 	}
     
-//    assert( (error = glGetError()) == GL_NO_ERROR);
+    assert( (error = glGetError()) == GL_NO_ERROR);
 }
 
 void StaticMeshUpdater::updateMeshFromFilter(const MeshFilter& filter, World& w, World::Entity e)
@@ -202,4 +199,55 @@ void StaticMeshUpdater::updateMeshFromFilter(const MeshFilter& filter, World& w,
     mesh->primitiveType = filter.primitiveType;
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+
+void StaticMeshUpdater::reflect(chaiscript::ChaiScript &context)
+{
+    context.add_global(chaiscript::var(this), "meshSystem");
+    
+    context.add(chaiscript::user_type<MeshFilter>(), "Mesh");
+    context.add(chaiscript::constructor<MeshFilter()>(), "Mesh");
+    
+    using position_list = std::vector<vec3>;
+    using normal_list = std::vector<vec3>;
+    using uv_list = std::vector<vec2>;
+    using face_list = std::vector<vec3i>;
+    
+    context.add(chaiscript::bootstrap::standard_library::vector_type<position_list>("PositionList"));
+    context.add(chaiscript::bootstrap::standard_library::vector_type<normal_list>("NormalList"));
+    context.add(chaiscript::bootstrap::standard_library::vector_type<uv_list>("UvList"));
+    context.add(chaiscript::bootstrap::standard_library::vector_type<face_list>("FaceList"));
+    
+    context.add(chaiscript::fun(&MeshFilter::positions), "positions");
+    context.add(chaiscript::fun(&MeshFilter::normals), "normals");
+    context.add(chaiscript::fun(&MeshFilter::uv), "uv");
+    context.add(chaiscript::fun(&MeshFilter::faces), "faces");
+    context.add(chaiscript::fun(&MeshFilter::primitiveType), "primitiveType");
+    
+    context.add(chaiscript::fun(&StaticMeshUpdater::updateMesh), "updateMesh");
+    context.add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<float>), "setMaterialProperty");
+    context.add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec2>), "setMaterialProperty");
+    context.add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec3>), "setMaterialProperty");
+    context.add(chaiscript::fun(&StaticMeshUpdater::setMaterialProperty<vec4>), "setMaterialProperty");
+    
+    context.add_global(chaiscript::const_var(GL_TRIANGLES), "TRIANGLES");
+    context.add_global(chaiscript::const_var(GL_LINES), "LINES");
+    context.add_global(chaiscript::const_var(GL_POINTS), "POINTS");
+}
+
+void StaticMeshUpdater::buildSphere(World::Entity e, size_t tessLevel)
+{
+    scheduleStateUpdate([&, e, tessLevel](World& w, double dt) {
+        builder.clear();
+        builder.buildIcosahedron();
+        builder.tesselateAsSphere(tessLevel);
+        MeshFilter mesh;
+        mesh.positions = builder.vertices;
+        mesh.normals = builder.normals;
+        mesh.faces = builder.triangles;
+        
+        updateMesh(e, mesh);
+    });
+}
+
+
 

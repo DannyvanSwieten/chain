@@ -7,14 +7,17 @@
 //
 
 #include "../world/world.hpp"
+#include "system.hpp"
 
 #pragma once
 
-class CollisionUpdater
+class CollisionUpdater: public System
 {
 public:
 	
-	void operator()(World& w, double dt);
+	void operator()(World& w, double dt) final;
+    void reflect(chaiscript::ChaiScript&) final;
+    
 	void setBoundingVolume(const vec3& bounds, World::Entity e);
 	void registerCollisionProbe(World::Entity e, std::function<void(World::Entity, World::Entity)> f);
 	
@@ -25,6 +28,5 @@ private:
 private:
 	
 	std::vector<World::Entity> entitiesToUpdate;
-	std::vector<std::function<void(World&, double)>> stateUpdates;
 	std::map<World::Entity, std::function<void(World::Entity, World::Entity)>> collisionProbes;
 };

@@ -49,3 +49,10 @@ bool InputUpdater::wasPressedThisFrame(int c) const
 	return pressedThisFrame[c];
 }
 
+void InputUpdater::reflect(chaiscript::ChaiScript &context)
+{
+    context.add_global(chaiscript::var(this), "inputController");
+    context.add(chaiscript::fun(&InputUpdater::isPressed), "isPressed");
+}
+
+

@@ -13,8 +13,6 @@
 
 void CollisionUpdater::operator()(World& w, double dt)
 {
-	updateState(w, dt);
-	
 	entitiesToUpdate.clear();
 	w.getAllEntitiesWithComponents<Transform, RigidBody, BoundingBox>(entitiesToUpdate);
     
@@ -54,15 +52,9 @@ void CollisionUpdater::operator()(World& w, double dt)
 
 void CollisionUpdater::setBoundingVolume(const vec3 &bounds, World::Entity e)
 {
-	stateUpdates.emplace_back([bounds, e](World& w, double dt) {
+	scheduleStateUpdate([bounds, e](World& w, double dt) {
 		w.getAll<BoundingBox>()[e]->radi = bounds * 0.5;
 	});
-}
-
-void CollisionUpdater::updateState(World &w, double dt)
-{
-	for(auto& update: stateUpdates)
-		update(w, dt);
 }
 
 void CollisionUpdater::registerCollisionProbe(World::Entity e, std::function<void (World::Entity, World::Entity)> f)
@@ -70,3 +62,8 @@ void CollisionUpdater::registerCollisionProbe(World::Entity e, std::function<voi
     collisionProbes[e] = f;
 }
 
+void CollisionUpdater::reflect(chaiscript::ChaiScript& ctx)
+{
+    ctx.add_global(chaiscript::var(this), "collisionSystem");
+    ctx.add(chaiscript::fun(&CollisionUpdater::registerCollisionProbe), "registerCollisionProbe");
+}

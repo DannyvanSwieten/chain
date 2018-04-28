@@ -9,21 +9,17 @@
 #pragma once
 
 #include "../world/world.hpp"
+#include "system.hpp"
 
-class PhysicsUpdater
+class PhysicsUpdater: public System
 {
 public:
-	void operator()(World& w, double dt);
+	void operator()(World& w, double dt) final;
+    void reflect(chaiscript::ChaiScript&) final;
 	
 	void applyForce(World::Entity e, const vec3& F);
 	void setMass(World::Entity e, math_precision_t mass);
 	
 private:
-	
-	void preUpdate(World& w, double dt);
-	
-private:
-	
-	std::vector<std::function<void(World&, double)>> stateUpdates;
 	
 };

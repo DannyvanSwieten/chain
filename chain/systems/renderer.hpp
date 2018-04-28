@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "../world/world.hpp"
+#include "system.hpp"
 
 struct UniformVisitor: public boost::static_visitor<>
 {
@@ -46,23 +47,21 @@ struct UniformVisitor: public boost::static_visitor<>
 	}
 };
 
-class Renderer
+class Renderer: public System
 {
 public:
     
-    Renderer(GLFWwindow* window);
-    void operator()(World& world, double dt);
+    Renderer(GLFWwindow* window, const std::string& name);
+    void operator()(World& world, double dt) final;
 	
 	void setUniforms(const Material& material);
     
 private:
     
-    void createMeshForEntity(World::Entity);
     void renderStaticMeshes(World& world, double dt);
     
 private:
     
-    std::vector<std::function<void(World&, double)>> stateUpdates;
-    
     GLFWwindow* window = nullptr;
+    const std::string name;
 };

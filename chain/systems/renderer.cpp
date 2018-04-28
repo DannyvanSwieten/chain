@@ -9,17 +9,14 @@
 #include "renderer.hpp"
 #include <OpenGL/gl3.h>
 
-Renderer::Renderer(GLFWwindow *window): window(window)
+Renderer::Renderer(GLFWwindow *window, const std::string& name): window(window), name(name)
 { 
-
+    glfwSetWindowTitle(window, name.c_str());
 }
 
 void Renderer::operator()(World &w, double dt)
 {
     glfwMakeContextCurrent(window);
-    
-    for(auto& update: stateUpdates)
-        update(w, dt);
     
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -27,8 +24,6 @@ void Renderer::operator()(World &w, double dt)
     renderStaticMeshes(w, dt);
 	
     glfwSwapBuffers(window);
-	
-	stateUpdates.clear();
 }
 
 void Renderer::setUniforms(const Material& material)
@@ -78,7 +73,7 @@ void Renderer::renderStaticMeshes(World &w, double dt)
         {
             location = glGetUniformLocation(mat.program, "viewMatrix");
             glUniformMatrix4fv(location, 1, false, &w.mainCamera->viewMatrix[0][0]);
-            
+
             location = glGetUniformLocation(mat.program, "projectionMatrix");
             glUniformMatrix4fv(location, 1, false, &w.mainCamera->perspectiveMatrix[0][0]);
         }

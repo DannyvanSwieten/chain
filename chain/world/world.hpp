@@ -8,9 +8,14 @@
 
 #pragma once
 
+#include <cxxabi.h>
+#include <map>
 #include <queue>
 
 #include "component_collection.hpp"
+#include <chaiscript/chaiscript.hpp>
+
+class System;
 
 class World
 {
@@ -19,6 +24,7 @@ public:
 	using Entity = size_t;
 	
 	World(size_t numDefaultStoragePerComponent = 512);
+    void reflect(chaiscript::ChaiScript&);
 	
 	Entity createEntity();
 	
@@ -73,8 +79,25 @@ public:
     {
         collection.getAllEntitiesWithComponents<Ts...>(output);
     }
+    
+    template<typename... Ts>
+    void registerNamedContructors(ComponentStorageCollection<Ts...>& collection)
+    {
+        (registerNamedContructor<Ts>(), ...);
+    }
+    
+    template<typename T>
+    void registerNamedContructor()
+    {
+        std::function<void(Entity)> ctor = [&](Entity e) {
+            attach<T>(e);
+        };
+        int status;
+        std::string demangled = abi::__cxa_demangle(typeid(T).name(),0,0,&status);
+        ctors.emplace(demangled, ctor);
+    }
 	
-	void addUpdater(std::function<void(World&, double)> updater);
+	void addUpdater(System* updater);
 	
 	void update(double);
     
@@ -84,11 +107,12 @@ public:
 	
 private:
 	
+    std::map<std::string, std::function<void(Entity)>> ctors;
 	size_t numEntitys = 0;
 	std::queue<Entity> freeList;
 	component_collection_t collection;
     
 	std::map<World::Entity, std::string> entityNames;
 	
-	std::vector<std::function<void(World&, double)>> updaters;
+	std::vector<System*> updaters;
 };

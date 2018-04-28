@@ -26,60 +26,11 @@ fun(entity) {
 
 ScriptUpdater::ScriptUpdater()
 {
-	chai.add(chaiscript::user_type<MeshFilter>(), "Mesh");
-	chai.add(chaiscript::constructor<MeshFilter()>(), "Mesh");
-	
-	using position_list = std::vector<vec3>;
-	using normal_list = std::vector<vec3>;
-	using uv_list = std::vector<vec2>;
-	using face_list = std::vector<vec3i>;
-	
-	chai.add(chaiscript::bootstrap::standard_library::vector_type<position_list>("PositionList"));
-	chai.add(chaiscript::bootstrap::standard_library::vector_type<normal_list>("NormalList"));
-	chai.add(chaiscript::bootstrap::standard_library::vector_type<uv_list>("UvList"));
-	chai.add(chaiscript::bootstrap::standard_library::vector_type<face_list>("FaceList"));
-	
-	chai.add(chaiscript::fun(&MeshFilter::positions), "positions");
-	chai.add(chaiscript::fun(&MeshFilter::normals), "normals");
-	chai.add(chaiscript::fun(&MeshFilter::uv), "uv");
-	chai.add(chaiscript::fun(&MeshFilter::faces), "faces");
-    chai.add(chaiscript::fun(&MeshFilter::primitiveType), "primitiveType");
-	
-	chai.add(chaiscript::fun([](vec2& lhs, const vec2& rhs){lhs = rhs;}), "=");
-	chai.add(chaiscript::constructor<vec2(float, float)>(), "Vec2");
-	
-	chai.add(chaiscript::fun([](vec3& lhs, const vec3& rhs){lhs = rhs;}), "=");
-	chai.add(chaiscript::constructor<vec3(float, float, float)>(), "Vec3");
-	
-	chai.add(chaiscript::fun([](vec4& lhs, const vec4& rhs){lhs = rhs;}), "=");
-	chai.add(chaiscript::constructor<vec4(float, float, float, float)>(), "Vec4");
-	
-	chai.add(chaiscript::fun([](vec3i& lhs, const vec3i& rhs){lhs = rhs;}), "=");
-	chai.add(chaiscript::constructor<vec3i(uint32_t, uint32_t, uint32_t)>(), "Face");
-	
-	chai.add(chaiscript::fun(&vec2::x), "x");
-	chai.add(chaiscript::fun(&vec2::y), "y");
-	
-	chai.add(chaiscript::fun(&vec3::x), "x");
-	chai.add(chaiscript::fun(&vec3::y), "y");
-	chai.add(chaiscript::fun(&vec3::z), "z");
-	
-	chai.add(chaiscript::fun(&vec4::x), "x");
-	chai.add(chaiscript::fun(&vec4::y), "y");
-	chai.add(chaiscript::fun(&vec4::z), "z");
-	chai.add(chaiscript::fun(&vec4::w), "w");
-	
-	chai.add(chaiscript::fun(&vec3i::x), "a");
-	chai.add(chaiscript::fun(&vec3i::y), "b");
-	chai.add(chaiscript::fun(&vec3i::z), "c");
+
 }
 
-void ScriptUpdater::operator()(World& w, double dt) {
-	
-	for(auto& update: stateUpdates)
-		update(w, dt);
-	
-	stateUpdates.clear();
+void ScriptUpdater::operator()(World& w, double dt)
+{
 	
 	entitiesToUpdate.clear();
 	w.getAllEntitiesWithComponents<Script>(entitiesToUpdate);
@@ -101,8 +52,11 @@ void ScriptUpdater::operator()(World& w, double dt) {
 
 void ScriptUpdater::load(const std::string& path, World::Entity e)
 {
-	stateUpdates.emplace_back([&, path, e](World& w, double dt)
+	scheduleStateUpdate([&, path, e](World& w, double dt)
 	{
+        if(!w.has<Script>(e))
+            w.attach<Script>(e);
+        
 		const auto slashPos = path.find_last_of("/");
 		const auto name = path.substr(slashPos + 1, path.size() - 6 - slashPos).substr();
 		if(creators.find(name) == creators.end())

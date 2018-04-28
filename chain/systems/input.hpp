@@ -11,19 +11,22 @@
 #include <array>
 #include <GLFW/glfw3.h>
 #include "../world/world.hpp"
+#include "system.hpp"
 
 static void keyCallback(GLFWwindow*,int,int,int,int);
 
-class InputUpdater
+class InputUpdater: public System
 {
 public:
     InputUpdater(GLFWwindow* window);
     
-    void operator()(World& w, double dt);
+    void operator()(World& w, double dt) final;
     void registerKeyPress(int, int, int , int);
 	
 	bool isPressed(int c) const;
 	bool wasPressedThisFrame(int c) const;
+    
+    void reflect(chaiscript::ChaiScript&);
     
 private:
     

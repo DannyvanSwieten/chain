@@ -9,12 +9,13 @@
 #pragma once
 
 #include "../world/world.hpp"
+#include "system.hpp"
 
-class CameraUpdater
+class CameraUpdater: public System
 {
 public:
     
-    void operator()(World& w, double dt);
+    void operator()(World& w, double dt) final;
     
     void lookAt(World::Entity, const vec3& target);
     void setFieldOfView(World::Entity e, float fov);
@@ -23,7 +24,5 @@ public:
     
     void setMainCamera(World::Entity e);
     
-private:
-    
-    std::vector<std::function<void(World&, double)>> updates;
+    void reflect(chaiscript::ChaiScript&) override;
 };

@@ -13,6 +13,9 @@
 		3064E9A920762210005DBEBD /* script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3064E9A720762210005DBEBD /* script.cpp */; };
 		3070FD94206A83C2000287DF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3070FD93206A83C2000287DF /* main.cpp */; };
 		30873741206D2CEA00642A69 /* world.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3087373F206D2CEA00642A69 /* world.cpp */; };
+		FA0B71792089BB150070A18E /* engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA0B71772089BB150070A18E /* engine.cpp */; };
+		FA0B717C2089C4830070A18E /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA0B717B2089C4830070A18E /* system.cpp */; };
+		FA1637D7208F15F90075FED6 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA1637D5208F15F90075FED6 /* game.cpp */; };
 		FADFA9632074B99F001351CF /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADFA9612074B99F001351CF /* input.cpp */; };
 		FADFA9662074C00A001351CF /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADFA9642074C00A001351CF /* renderer.cpp */; };
 		FADFA9692074C138001351CF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADFA9682074C138001351CF /* OpenGL.framework */; };
@@ -50,6 +53,12 @@
 		3087373E206D0FAF00642A69 /* component_storage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = component_storage.hpp; sourceTree = "<group>"; };
 		3087373F206D2CEA00642A69 /* world.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = world.cpp; sourceTree = "<group>"; };
 		30873740206D2CEA00642A69 /* world.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = world.hpp; sourceTree = "<group>"; };
+		FA0B71772089BB150070A18E /* engine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = engine.cpp; sourceTree = "<group>"; };
+		FA0B71782089BB150070A18E /* engine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = engine.hpp; sourceTree = "<group>"; };
+		FA0B717A2089C3BF0070A18E /* system.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = system.hpp; sourceTree = "<group>"; };
+		FA0B717B2089C4830070A18E /* system.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = system.cpp; sourceTree = "<group>"; };
+		FA1637D5208F15F90075FED6 /* game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = game.cpp; sourceTree = "<group>"; };
+		FA1637D6208F15F90075FED6 /* game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game.hpp; sourceTree = "<group>"; };
 		FA579FDA207540D600F59139 /* static_mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = static_mesh.hpp; sourceTree = "<group>"; };
 		FAC38E5B206E963F00E1778A /* components.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = components.hpp; sourceTree = "<group>"; };
 		FAC38E5D206E966700E1778A /* transform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = transform.hpp; sourceTree = "<group>"; };
@@ -96,6 +105,8 @@
 				3064E9A820762210005DBEBD /* script.hpp */,
 				FAE08199207DFEF9000BA909 /* camera_system.cpp */,
 				FAE0819A207DFEF9000BA909 /* camera_system.hpp */,
+				FA0B717B2089C4830070A18E /* system.cpp */,
+				FA0B717A2089C3BF0070A18E /* system.hpp */,
 			);
 			path = systems;
 			sourceTree = "<group>";
@@ -104,8 +115,8 @@
 			isa = PBXGroup;
 			children = (
 				3070FD92206A83C2000287DF /* chain */,
-				3070FD91206A83C2000287DF /* Products */,
 				FADFA9672074C138001351CF /* Frameworks */,
+				3070FD91206A83C2000287DF /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,10 +132,14 @@
 			isa = PBXGroup;
 			children = (
 				3070FD93206A83C2000287DF /* main.cpp */,
+				FA0B71772089BB150070A18E /* engine.cpp */,
+				FA0B71782089BB150070A18E /* engine.hpp */,
 				FAC38E5C206E964800E1778A /* components */,
 				FAC38E62206E97EE00E1778A /* math */,
 				305F3E7B20738F8500EE1FF6 /* systems */,
 				FAC38E60206E976700E1778A /* world */,
+				FA1637D5208F15F90075FED6 /* game.cpp */,
+				FA1637D6208F15F90075FED6 /* game.hpp */,
 			);
 			path = chain;
 			sourceTree = "<group>";
@@ -232,7 +247,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3064E9A920762210005DBEBD /* script.cpp in Sources */,
+				FA0B71792089BB150070A18E /* engine.cpp in Sources */,
 				FAE0819B207DFEF9000BA909 /* camera_system.cpp in Sources */,
+				FA0B717C2089C4830070A18E /* system.cpp in Sources */,
 				30873741206D2CEA00642A69 /* world.cpp in Sources */,
 				FADFA9632074B99F001351CF /* input.cpp in Sources */,
 				305F3E7E20738F9800EE1FF6 /* physics.cpp in Sources */,
@@ -240,6 +257,7 @@
 				305F3E812073BAF200EE1FF6 /* collision.cpp in Sources */,
 				3064E9A42076002E005DBEBD /* mesh.cpp in Sources */,
 				3070FD94206A83C2000287DF /* main.cpp in Sources */,
+				FA1637D7208F15F90075FED6 /* game.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,6 +387,10 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = (
+					"-lglfw",
+					"-lbear-graphics_static",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -379,6 +401,10 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = (
+					"-lglfw",
+					"-lbear-graphics_static",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

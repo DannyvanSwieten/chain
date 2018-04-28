@@ -7,10 +7,23 @@
 //
 
 #include "world.hpp"
+#include "system.hpp"
 
 World::World(size_t numDefaultStoragePerComponent)
 {
 	collection.reserve(numDefaultStoragePerComponent);
+    registerNamedContructors(collection);
+}
+
+void World::reflect(chaiscript::ChaiScript& ctx)
+{
+    ctx.add_global(chaiscript::var(this), "world");
+    ctx.add(chaiscript::fun(&World::getEntityByName), "getEntityByName");
+    ctx.add(chaiscript::fun(&World::setPosition), "setPosition");
+    ctx.add((chaiscript::fun(&World::getPosition)), "getPosition");
+    
+    for(auto& system: updaters)
+        system->reflect(ctx);
 }
 
 World::Entity World::createEntity()
@@ -84,13 +97,13 @@ World::Entity World::getEntityByName(const std::string &name)
     return -1;
 }
 
-void World::addUpdater(std::function<void(World&, double)> updater)
+void World::addUpdater(System* system)
 {
-	updaters.emplace_back(updater);
+	updaters.emplace_back(system);
 }
 
 void World::update(double dt)
 {
 	for(auto& updater: updaters)
-		updater(*this, dt);
+		updater->update(*this, dt);
 }

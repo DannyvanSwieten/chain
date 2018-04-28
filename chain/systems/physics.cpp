@@ -12,8 +12,6 @@
 
 void PhysicsUpdater::operator()(World& w, double dt)
 {
-	preUpdate(w, dt);
-	
 	std::vector<World::Entity> entitiesToUpdate;
 	entitiesToUpdate.clear();
 	w.getAllEntitiesWithComponents<Transform, RigidBody>(entitiesToUpdate);
@@ -33,7 +31,7 @@ void PhysicsUpdater::operator()(World& w, double dt)
 		}
 		
 		body->velocity = body->momentum * body->invMass;
-//        body->momentum.y += -9.8 * dt;
+        body->momentum.y += -9.8 * dt;
 		transform->position += body->velocity * dt;
 		
 //        std::cout << transform->position << std::endl;
@@ -42,7 +40,7 @@ void PhysicsUpdater::operator()(World& w, double dt)
 
 void PhysicsUpdater::applyForce(World::Entity e, const vec3& F)
 {
-	stateUpdates.emplace_back([F, e] (World& w, double dt) {
+	scheduleStateUpdate([F, e] (World& w, double dt) {
 		w.getAll<RigidBody>()[e]->momentum += F * dt;
 	});
 }
@@ -51,15 +49,14 @@ void PhysicsUpdater::setMass(World::Entity e, math_precision_t mass)
 {
 	assert(mass != 0.0);
 	
-	stateUpdates.emplace_back([mass, e](World& w, double dt) {
+	scheduleStateUpdate([mass, e](World& w, double dt) {
 		w.getAll<RigidBody>()[e]->invMass = 1.0 / mass;
 	});
 }
 
-void PhysicsUpdater::preUpdate(World& w, double dt)
+void PhysicsUpdater::reflect(chaiscript::ChaiScript &ctx)
 {
-	for(auto& f: stateUpdates)
-		f(w, dt);
-	
-	stateUpdates.clear();
+    ctx.add_global(chaiscript::var(this), "physicsSystem");
+    ctx.add(chaiscript::fun(&PhysicsUpdater::applyForce), "applyForce");
 }
+

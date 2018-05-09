@@ -10,6 +10,7 @@
 
 #include <moodycamel/concurrentqueue.h>
 #include <chaiscript/chaiscript.hpp>
+#include <lua.hpp>
 
 class World;
 
@@ -21,9 +22,11 @@ public:
     
     void update(World&, double);
     void scheduleStateUpdate(StateUpdate update);
-    
+
+    virtual void start(World&) { }
     virtual void operator()(World&, double) = 0;
     virtual void reflect(chaiscript::ChaiScript& scriptContext) { };
+    virtual void reflect(lua_State* scriptContext) { };
     
 protected:
     

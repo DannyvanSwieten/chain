@@ -14,6 +14,7 @@
 #include "systems/camera_system.hpp"
 #include "systems/collision.hpp"
 #include "systems/physics.hpp"
+#include "systems/lua_script_system.hpp"
 #include "systems/input.hpp"
 #include "systems/mesh.hpp"
 #include "systems/renderer.hpp"
@@ -35,6 +36,11 @@ public:
         return scriptUpdater;
     };
     
+    LuaScriptSystem& getLuaContext()
+    {
+        return luaScriptSystem;
+    }
+    
 private:
     
     void update(double dt);
@@ -48,6 +54,7 @@ public:
     std::unique_ptr<InputUpdater> inputUpdater;
     std::unique_ptr<Renderer> renderer;
     ScriptUpdater scriptUpdater;
+    LuaScriptSystem luaScriptSystem;
     CameraUpdater cameraUpdater;
     PhysicsUpdater physics;
     CollisionUpdater collision;

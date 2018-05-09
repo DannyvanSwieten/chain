@@ -11,6 +11,8 @@
 #include <moditone/bear/graphics/perspective.hpp>
 #include <moditone/bear/graphics/look_at.hpp>
 
+#include <LuaBridge/LuaBridge.h>
+
 void CameraUpdater::operator()(World &w, double dt)
 {
     
@@ -92,4 +94,18 @@ void CameraUpdater::reflect(chaiscript::ChaiScript &context)
     context.add(chaiscript::fun(&CameraUpdater::setFieldOfView), "setZNear");
     context.add(chaiscript::fun(&CameraUpdater::setFieldOfView), "setZFar");
     context.add(chaiscript::fun(&CameraUpdater::lookAt), "lookAt");
+}
+
+void CameraUpdater::reflect(lua_State* context)
+{
+    luabridge::getGlobalNamespace(context).
+    beginClass<CameraUpdater>("CameraSystem").
+    addFunction("lookAt", &CameraUpdater::lookAt).
+    addFunction("setMainCamera", &CameraUpdater::setMainCamera).
+    addFunction("setFieldOfView", &CameraUpdater::setFieldOfView).
+    addFunction("setZNear", &CameraUpdater::setZNear).
+    addFunction("setZFar", &CameraUpdater::setZFar).
+    endClass();
+    
+    luabridge::setGlobal(context, this, "cameraSystem");
 }

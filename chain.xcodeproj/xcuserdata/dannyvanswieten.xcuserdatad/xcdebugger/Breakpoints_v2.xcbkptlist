@@ -2,4 +2,70 @@
 <Bucket
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "chain/systems/mesh.cpp"
+            timestampString = "546978766.2246259"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "StaticMeshUpdater::updateMesh(World::Entity e, const MeshFilter&amp; filter)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "chain/systems/mesh.cpp"
+            timestampString = "547544485.200507"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "StaticMeshUpdater::updateMesh(World::Entity e, const MeshFilter&amp; filter)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "StaticMeshUpdater::updateMesh(unsigned long, MeshFilter const&amp;)"
+                  moduleName = "chain"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dannyvanswieten/Code/chain/chain/systems/mesh.cpp"
+                  timestampString = "547544506.213535"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62"
+                  offsetFromSymbolStart = "53">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "StaticMeshUpdater::updateMesh(unsigned long, MeshFilter const&amp;)::$_0::operator()(World&amp;, double) const"
+                  moduleName = "chain"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dannyvanswieten/Code/chain/chain/systems/mesh.cpp"
+                  timestampString = "547544506.215775"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62"
+                  offsetFromSymbolStart = "99">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

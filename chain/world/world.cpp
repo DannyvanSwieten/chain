@@ -26,6 +26,12 @@ void World::reflect(chaiscript::ChaiScript& ctx)
         system->reflect(ctx);
 }
 
+void World::reflect(lua_State* state)
+{
+    for(auto& system: updaters)
+        system->reflect(state);
+}
+
 World::Entity World::createEntity()
 {
 	Entity o = -1;
@@ -102,8 +108,19 @@ void World::addUpdater(System* system)
 	updaters.emplace_back(system);
 }
 
+void World::start()
+{
+    for(auto& updater: updaters)
+        updater->start(*this);
+}
+
 void World::update(double dt)
 {
+    std::function<void(World&)> update;
+    
+    while(stateUpdates.try_dequeue(update))
+        update(*this);
+    
 	for(auto& updater: updaters)
 		updater->update(*this, dt);
 }

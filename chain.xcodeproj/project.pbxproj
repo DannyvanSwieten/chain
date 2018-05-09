@@ -16,6 +16,7 @@
 		FA0B71792089BB150070A18E /* engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA0B71772089BB150070A18E /* engine.cpp */; };
 		FA0B717C2089C4830070A18E /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA0B717B2089C4830070A18E /* system.cpp */; };
 		FA1637D7208F15F90075FED6 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA1637D5208F15F90075FED6 /* game.cpp */; };
+		FADD64FF2099A86400AA9AD4 /* lua_script_system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADD64FD2099A86400AA9AD4 /* lua_script_system.cpp */; };
 		FADFA9632074B99F001351CF /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADFA9612074B99F001351CF /* input.cpp */; };
 		FADFA9662074C00A001351CF /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADFA9642074C00A001351CF /* renderer.cpp */; };
 		FADFA9692074C138001351CF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADFA9682074C138001351CF /* OpenGL.framework */; };
@@ -66,6 +67,9 @@
 		FAC38E5F206E96F800E1778A /* precision.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = precision.hpp; sourceTree = "<group>"; };
 		FAC38E61206E977700E1778A /* component_collection.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = component_collection.hpp; sourceTree = "<group>"; };
 		FAC38E63206E980700E1778A /* mat.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mat.hpp; sourceTree = "<group>"; };
+		FADD64FC2099A70D00AA9AD4 /* lua_script.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lua_script.hpp; sourceTree = "<group>"; };
+		FADD64FD2099A86400AA9AD4 /* lua_script_system.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lua_script_system.cpp; sourceTree = "<group>"; };
+		FADD64FE2099A86400AA9AD4 /* lua_script_system.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lua_script_system.hpp; sourceTree = "<group>"; };
 		FADFA9612074B99F001351CF /* input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = input.cpp; sourceTree = "<group>"; };
 		FADFA9622074B99F001351CF /* input.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = input.hpp; sourceTree = "<group>"; };
 		FADFA9642074C00A001351CF /* renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = renderer.cpp; sourceTree = "<group>"; };
@@ -107,6 +111,8 @@
 				FAE0819A207DFEF9000BA909 /* camera_system.hpp */,
 				FA0B717B2089C4830070A18E /* system.cpp */,
 				FA0B717A2089C3BF0070A18E /* system.hpp */,
+				FADD64FD2099A86400AA9AD4 /* lua_script_system.cpp */,
+				FADD64FE2099A86400AA9AD4 /* lua_script_system.hpp */,
 			);
 			path = systems;
 			sourceTree = "<group>";
@@ -158,6 +164,7 @@
 				3064E9A52076012C005DBEBD /* mesh_filter.hpp */,
 				3064E9A620762191005DBEBD /* script.hpp */,
 				FAE08198207DFAD3000BA909 /* camera.hpp */,
+				FADD64FC2099A70D00AA9AD4 /* lua_script.hpp */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -249,6 +256,7 @@
 				3064E9A920762210005DBEBD /* script.cpp in Sources */,
 				FA0B71792089BB150070A18E /* engine.cpp in Sources */,
 				FAE0819B207DFEF9000BA909 /* camera_system.cpp in Sources */,
+				FADD64FF2099A86400AA9AD4 /* lua_script_system.cpp in Sources */,
 				FA0B717C2089C4830070A18E /* system.cpp in Sources */,
 				30873741206D2CEA00642A69 /* world.cpp in Sources */,
 				FADFA9632074B99F001351CF /* input.cpp in Sources */,
@@ -390,6 +398,7 @@
 				OTHER_LDFLAGS = (
 					"-lglfw",
 					"-lbear-graphics_static",
+					"-llua",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -404,6 +413,7 @@
 				OTHER_LDFLAGS = (
 					"-lglfw",
 					"-lbear-graphics_static",
+					"-llua",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

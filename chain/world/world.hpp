@@ -8,12 +8,13 @@
 
 #pragma once
 
+#include <moodycamel/concurrentqueue.h>
+#include <chaiscript/chaiscript.hpp>
 #include <cxxabi.h>
 #include <map>
 #include <queue>
 
 #include "component_collection.hpp"
-#include <chaiscript/chaiscript.hpp>
 
 class System;
 
@@ -25,6 +26,7 @@ public:
 	
 	World(size_t numDefaultStoragePerComponent = 512);
     void reflect(chaiscript::ChaiScript&);
+    void reflect(lua_State*);
 	
 	Entity createEntity();
 	
@@ -40,9 +42,11 @@ public:
     Entity getEntityByName(const std::string& name);
 	
 	template<class C>
-	void attach(Entity Entity)
+	void attach(Entity entity)
 	{
-		collection.initialize<C>(Entity);
+        stateUpdates.enqueue([&, entity](World&){
+            collection.initialize<C>(entity);
+        });
 	}
 	
 	template<typename C>
@@ -99,6 +103,7 @@ public:
 	
 	void addUpdater(System* updater);
 	
+    void start();
 	void update(double);
     
 public:
@@ -115,4 +120,6 @@ private:
 	std::map<World::Entity, std::string> entityNames;
 	
 	std::vector<System*> updaters;
+    
+    moodycamel::ConcurrentQueue<std::function<void(World&)>> stateUpdates;
 };

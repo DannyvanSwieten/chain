@@ -10,6 +10,7 @@
 
 #include "bounding_box.hpp"
 #include "camera.hpp"
+#include "lua_script.hpp"
 #include "rigid_body.hpp"
 #include "script.hpp"
 #include "spring_joint.hpp"

@@ -25,4 +25,5 @@ public:
     void setMainCamera(World::Entity e);
     
     void reflect(chaiscript::ChaiScript&) override;
+    void reflect(lua_State*) override;    
 };

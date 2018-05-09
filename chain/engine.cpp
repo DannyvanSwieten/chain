@@ -33,11 +33,12 @@ Engine::Engine(const std::string& name): world(1024)
     
     world.addUpdater(renderer.get());
     world.addUpdater(inputUpdater.get());
-    world.addUpdater(&scriptUpdater);
+//    world.addUpdater(&scriptUpdater);
     world.addUpdater(&cameraUpdater);
     world.addUpdater(&collision);
     world.addUpdater(&physics);
     world.addUpdater(&meshUpdater);
+    world.addUpdater(&luaScriptSystem);
     
     setupDefaultScripting();
 }
@@ -60,8 +61,8 @@ chaiscript::ChaiScript &Engine::getScriptContext()
 
 void Engine::run()
 {
-    world.reflect(scriptUpdater.getContext());
-    
+    world.reflect(luaScriptSystem.getContext());
+    world.start();
     running = true;
     while(running)
     {
@@ -110,4 +111,35 @@ void Engine::setupMathScripting()
     context.add(chaiscript::fun(&vec3i::x), "a");
     context.add(chaiscript::fun(&vec3i::y), "b");
     context.add(chaiscript::fun(&vec3i::z), "c");
+    
+    auto lua = luaScriptSystem.getContext();
+    luabridge::getGlobalNamespace(lua).
+    beginClass<vec2>("Vec2").
+    addConstructor<void(*)(void)>().
+    addConstructor<void(*)(float, float)>().
+    addData("x", &vec2::x).
+    addData("y", &vec2::y).
+    endClass().
+    beginClass<vec3>("Vec3").
+    addConstructor<void(*)(void)>().
+    addConstructor<void(*)(float, float, float)>().
+    addData("x", &vec3::x).
+    addData("y", &vec3::y).
+    addData("z", &vec3::z).
+    addData("r", &vec3::r).
+    addData("g", &vec3::g).
+    addData("b", &vec3::b).
+    endClass().
+    beginClass<vec4>("Vec4").
+    addConstructor<void(*)(void)>().
+    addConstructor<void(*)(float, float, float, float)>().
+    addData("x", &vec4::x).
+    addData("y", &vec4::y).
+    addData("z", &vec4::z).
+    addData("z", &vec4::w).
+    addData("r", &vec4::r).
+    addData("g", &vec4::g).
+    addData("b", &vec4::b).
+    addData("z", &vec4::a).
+    endClass();
 }

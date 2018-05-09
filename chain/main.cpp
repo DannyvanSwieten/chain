@@ -20,6 +20,9 @@ public:
         
         cameraEntity = engine.getWorld().createEntity();
         engine.getScriptSystem().load("/Users/dannyvanswieten/Desktop/Camera.chai", cameraEntity);
+        
+        luaEntity = engine.getWorld().createEntity();
+        engine.getLuaContext().loadScript(luaEntity, "/Users/dannyvanswieten/Desktop/test.lua");
     }
     
     void onStart() override
@@ -41,6 +44,8 @@ private:
     
     World::Entity gridEntity;
     World::Entity cameraEntity;
+    
+    World::Entity luaEntity;
 };
 
 int main(int argc, const char * argv[])

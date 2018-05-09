@@ -234,6 +234,51 @@ void StaticMeshUpdater::reflect(chaiscript::ChaiScript &context)
     context.add_global(chaiscript::const_var(GL_POINTS), "POINTS");
 }
 
+void StaticMeshUpdater::reflect(lua_State* context)
+{
+    using position_list = std::vector<vec3>;
+    using normal_list = std::vector<vec3>;
+    using uv_list = std::vector<vec2>;
+    using face_list = std::vector<vec3i>;
+    
+    luabridge::getGlobalNamespace(context).
+    beginClass<StaticMeshUpdater>("MeshSystem").
+    addFunction("setMaterialProperty", &StaticMeshUpdater::setMaterialProperty<float>).
+    addFunction("setMaterialProperty", &StaticMeshUpdater::setMaterialProperty<vec2>).
+    addFunction("setMaterialProperty", &StaticMeshUpdater::setMaterialProperty<vec3>).
+    addFunction("setMaterialProperty", &StaticMeshUpdater::setMaterialProperty<vec4>).
+    addFunction("updateMesh", &StaticMeshUpdater::updateMesh).
+    endClass().
+    beginClass<position_list>("PositionList").
+    addConstructor<void(*)(void)>().
+    addFunction<void (position_list::*) (const vec3&)>("PushBack", &position_list::push_back).
+    endClass().
+    beginClass<normal_list>("NormalList").
+    addConstructor<void(*)(void)>().
+    addFunction<void (normal_list::*) (const vec3&)>("PushBack", &normal_list::push_back).
+    endClass().
+    beginClass<uv_list>("UvList").
+    addConstructor<void(*)(void)>().
+    addFunction<void (uv_list::*) (const vec2&)>("PushBack", &uv_list::push_back).
+    endClass().
+    beginClass<face_list>("FaceList").
+    addConstructor<void(*)(void)>().
+    addFunction<void (face_list::*) (const vec3i&)>("PushBack", &face_list::push_back).
+    endClass().
+    beginClass<MeshFilter>("MeshFilter").
+    addConstructor<void(*)(void)>().
+    addData("positions", &MeshFilter::positions).
+    addData("normals", &MeshFilter::normals).
+    addData("texCoords", &MeshFilter::uv).
+    addData("faces", &MeshFilter::faces).
+    endClass();
+    
+    luabridge::setGlobal(context, this, "meshSystem");
+    luabridge::setGlobal(context, GL_POINTS, "POINTS");
+    luabridge::setGlobal(context, GL_LINES, "LINES");
+    luabridge::setGlobal(context, GL_TRIANGLES, "TRIANGLES");
+}
+
 void StaticMeshUpdater::buildSphere(World::Entity e, size_t tessLevel)
 {
     scheduleStateUpdate([&, e, tessLevel](World& w, double dt) {
@@ -248,6 +293,4 @@ void StaticMeshUpdater::buildSphere(World::Entity e, size_t tessLevel)
         updateMesh(e, mesh);
     });
 }
-
-
 

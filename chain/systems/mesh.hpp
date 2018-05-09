@@ -38,6 +38,7 @@ public:
 	}
     
     void reflect(chaiscript::ChaiScript& ) override;
+    void reflect(lua_State* ) override;
     
     void buildSphere(World::Entity e, size_t tessLevel);
 	

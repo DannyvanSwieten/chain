@@ -10,7 +10,14 @@
 
 #include "components/mesh_filter.hpp"
 
-Engine::Engine(const std::string& name): world(1024)
+Engine::Engine(const std::string& name):
+world(1024),
+scriptUpdater(world),
+luaScriptSystem(world),
+collision(world),
+physics(world),
+cameraUpdater(world),
+meshUpdater(world)
 {
     const auto result = glfwInit();
     if(result != GLFW_TRUE)
@@ -28,8 +35,8 @@ Engine::Engine(const std::string& name): world(1024)
     
     glfwShowWindow(window);
     
-    inputUpdater = std::make_unique<InputUpdater>(window);
-    renderer = std::make_unique<Renderer>(window, name);
+    inputUpdater = std::make_unique<InputUpdater>(world, window);
+    renderer = std::make_unique<Renderer>(world, window, name);
     
     world.addUpdater(renderer.get());
     world.addUpdater(inputUpdater.get());
@@ -141,5 +148,12 @@ void Engine::setupMathScripting()
     addData("g", &vec4::g).
     addData("b", &vec4::b).
     addData("z", &vec4::a).
+    endClass().
+    beginClass<vec3i>("Face").
+    addConstructor<void(*)(void)>().
+    addConstructor<void(*)(float, float, float)>().
+    addData("a", &vec3i::x).
+    addData("b", &vec3i::y).
+    addData("c", &vec3i::z).
     endClass();
 }

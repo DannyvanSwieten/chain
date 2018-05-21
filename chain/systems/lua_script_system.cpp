@@ -8,7 +8,7 @@
 
 #include "lua_script_system.hpp"
 
-LuaScriptSystem::LuaScriptSystem()
+LuaScriptSystem::LuaScriptSystem(World& w): System(w)
 {
     main = luaL_newstate();
     if(main)

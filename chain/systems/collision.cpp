@@ -11,6 +11,11 @@
 #include <cmath>
 #include <iostream>
 
+CollisionUpdater::CollisionUpdater(World& w): System(w)
+{
+    
+}
+
 void CollisionUpdater::operator()(World& w, double dt)
 {
 	entitiesToUpdate.clear();

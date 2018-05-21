@@ -21,6 +21,8 @@ public:
     using StateUpdate = std::function<void(World&, double dt)>;
     using PreStartTask = std::function<void(World&)>;
     
+    System(World& w);
+    
     void onStart(World&);
     void update(World&, double);
     void scheduleStateUpdate(StateUpdate update);
@@ -32,6 +34,10 @@ public:
     virtual void reflect(lua_State* scriptContext) { };
     
 protected:
+    
+    World& world;
+    
+private:
     
     moodycamel::ConcurrentQueue<StateUpdate> stateUpdates;
     moodycamel::ConcurrentQueue<PreStartTask> preStartTasks;

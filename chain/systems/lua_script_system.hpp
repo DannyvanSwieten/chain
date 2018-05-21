@@ -16,7 +16,7 @@ class LuaScriptSystem: public System
 {
 public:
     
-    LuaScriptSystem();
+    LuaScriptSystem(World& w);
     
     void start(World&) override;
     void operator()(World &, double) override;

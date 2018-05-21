@@ -8,17 +8,17 @@
 
 #pragma once
 
-#include <vector>
+#include "../vector_wrapper.hpp"
 
 #include "../math/vec.hpp"
 
 struct MeshFilter
 {
-	std::vector<vec3> positions;
-	std::vector<vec3> normals;
-	std::vector<vec2> uv;
+	vector_wrapper<vec3> positions;
+	vector_wrapper<vec3> normals;
+	vector_wrapper<vec2> uv;
 	
-	std::vector<vec3i> faces;
+	vector_wrapper<vec3i> faces;
     
     uint32_t primitiveType;
 };

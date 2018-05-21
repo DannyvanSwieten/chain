@@ -8,6 +8,10 @@
 
 #include "system.hpp"
 
+System::System(World& w): world(w)
+{
+    
+}
 
 void System::update(World &w, double dt)
 {

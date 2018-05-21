@@ -18,7 +18,7 @@ class ScriptUpdater: public System
 {
 public:
 	
-	ScriptUpdater();
+	ScriptUpdater(World& w);
 	
 	void operator()( World&, double ) final;
 	void load(const std::string& source, World::Entity e);

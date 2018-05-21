@@ -60,6 +60,7 @@
 		FA0B717B2089C4830070A18E /* system.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = system.cpp; sourceTree = "<group>"; };
 		FA1637D5208F15F90075FED6 /* game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = game.cpp; sourceTree = "<group>"; };
 		FA1637D6208F15F90075FED6 /* game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game.hpp; sourceTree = "<group>"; };
+		FA1FF0F420B33F8500C08BE0 /* vector_wrapper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vector_wrapper.hpp; sourceTree = "<group>"; };
 		FA579FDA207540D600F59139 /* static_mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = static_mesh.hpp; sourceTree = "<group>"; };
 		FAC38E5B206E963F00E1778A /* components.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = components.hpp; sourceTree = "<group>"; };
 		FAC38E5D206E966700E1778A /* transform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = transform.hpp; sourceTree = "<group>"; };
@@ -146,6 +147,7 @@
 				FAC38E60206E976700E1778A /* world */,
 				FA1637D5208F15F90075FED6 /* game.cpp */,
 				FA1637D6208F15F90075FED6 /* game.hpp */,
+				FA1FF0F420B33F8500C08BE0 /* vector_wrapper.hpp */,
 			);
 			path = chain;
 			sourceTree = "<group>";

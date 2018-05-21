@@ -9,7 +9,7 @@
 #include "renderer.hpp"
 #include <OpenGL/gl3.h>
 
-Renderer::Renderer(GLFWwindow *window, const std::string& name): window(window), name(name)
+Renderer::Renderer(World& w, GLFWwindow *window, const std::string& name): System(w), window(window), name(name)
 { 
     glfwSetWindowTitle(window, name.c_str());
 }

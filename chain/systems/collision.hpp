@@ -15,6 +15,7 @@ class CollisionUpdater: public System
 {
 public:
 	
+    CollisionUpdater(World& w);
 	void operator()(World& w, double dt) final;
     void reflect(chaiscript::ChaiScript&) final;
     

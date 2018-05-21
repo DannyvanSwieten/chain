@@ -12,7 +12,7 @@
 #include <map>
 #include <vector>
 
-#include "../math/vec.hpp"
+#include "mesh_filter.hpp"
 
 using uniform_t = boost::variant<float, vec2, vec3, vec4>;
 
@@ -37,5 +37,5 @@ struct StaticMesh
 	
 	Material material;
     
-    
+    MeshFilter filter;
 };

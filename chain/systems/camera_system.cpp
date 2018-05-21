@@ -13,6 +13,11 @@
 
 #include <LuaBridge/LuaBridge.h>
 
+CameraUpdater::CameraUpdater(World& w): System(w)
+{
+    
+}
+
 void CameraUpdater::operator()(World &w, double dt)
 {
     

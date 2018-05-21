@@ -24,7 +24,7 @@ fun(entity) {
 }
 )";
 
-ScriptUpdater::ScriptUpdater()
+ScriptUpdater::ScriptUpdater(World& w): System(w)
 {
 
 }

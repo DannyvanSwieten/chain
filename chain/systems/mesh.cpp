@@ -45,12 +45,17 @@ void main()
 
 )";
 
+StaticMeshUpdater::StaticMeshUpdater(World& w): System(w)
+{
+    
+}
+
 void StaticMeshUpdater::operator()(World& w, double dt)
 { 
 
 }
 
-void StaticMeshUpdater::updateMesh(World::Entity e, const MeshFilter& filter) {
+void StaticMeshUpdater::updateMesh(World::Entity e) {
 	scheduleStateUpdate([&, e](World& w, double dt) {
 		
 		if(!w.has<StaticMesh>(e))
@@ -59,7 +64,7 @@ void StaticMeshUpdater::updateMesh(World::Entity e, const MeshFilter& filter) {
 			createMeshForEntity(w, e);
 		}
 		
-		updateMeshFromFilter(filter, w, e);
+		updateMeshFromFilter(w, e);
 	});
 }
 
@@ -67,7 +72,7 @@ void StaticMeshUpdater::createMeshForEntity(World& w, World::Entity e)
 {
 	w.attach<StaticMesh>(e);
 	auto& m = w.getAll<StaticMesh>()[e];
-
+    
     m->primitiveType = GL_TRIANGLES;
     uint32_t error = 0;
     assert( (error = glGetError()) == GL_NO_ERROR);
@@ -163,12 +168,13 @@ void StaticMeshUpdater::createMeshForEntity(World& w, World::Entity e)
     assert( (error = glGetError()) == GL_NO_ERROR);
 }
 
-void StaticMeshUpdater::updateMeshFromFilter(const MeshFilter& filter, World& w, World::Entity e)
+void StaticMeshUpdater::updateMeshFromFilter(World& w, World::Entity e)
 {
 	auto& mesh = w.getAll<StaticMesh>()[e];
+    auto filter = &mesh->filter;
 
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo);
-	glBufferData(GL_ARRAY_BUFFER, filter.positions.size() * sizeof(Vertex), nullptr, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, filter->positions.size() * sizeof(Vertex), nullptr, GL_STATIC_DRAW);
 	
 	Vertex* vertices = static_cast<Vertex*>(glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE));
     if(!vertices)
@@ -176,11 +182,11 @@ void StaticMeshUpdater::updateMeshFromFilter(const MeshFilter& filter, World& w,
     
 	assert(vertices);
 	
-	auto& pos = filter.positions;
-	auto& normal = filter.normals;
-	auto& uv = filter.uv;
+    auto& pos = filter->positions;
+    auto& normal = filter->normals;
+    auto& uv = filter->uv;
 	
-	for(auto i = 0; i < filter.positions.size(); i++)
+    for(auto i = 0; i < filter->positions.size(); i++)
 		vertices[i].position = pos[i];
 
 	for(auto i = 0; i < normal.size(); i++)
@@ -193,11 +199,33 @@ void StaticMeshUpdater::updateMeshFromFilter(const MeshFilter& filter, World& w,
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, filter.faces.size() * sizeof(vec3i), filter.faces.data(), GL_STATIC_DRAW);
-	mesh->numFaces = static_cast<uint32_t>(filter.faces.size());
-    mesh->numVertices = static_cast<uint32_t>(filter.positions.size());
-    mesh->primitiveType = filter.primitiveType;
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, filter->faces.size() * sizeof(vec3i), filter->faces.data(), GL_STATIC_DRAW);
+    mesh->numFaces = static_cast<uint32_t>(filter->faces.size());
+    mesh->numVertices = static_cast<uint32_t>(filter->positions.size());
+    mesh->primitiveType = filter->primitiveType;
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void StaticMeshUpdater::setPositions(World::Entity e, const vector_wrapper<vec3> &positions)
+{
+    if(!world.has<StaticMesh>(e))
+    {
+        world.attach<StaticMesh>(e);
+        createMeshForEntity(world, e);
+    }
+    
+    world.getAll<StaticMesh>()[e]->filter.positions = positions;
+}
+
+void StaticMeshUpdater::setFaces(World::Entity e, const vector_wrapper<vec3i> &faces)
+{
+    if(!world.has<StaticMesh>(e))
+    {
+        world.attach<StaticMesh>(e);
+        createMeshForEntity(world, e);
+    }
+    
+    world.getAll<StaticMesh>()[e]->filter.faces = faces;
 }
 
 void StaticMeshUpdater::reflect(chaiscript::ChaiScript &context)
@@ -236,10 +264,10 @@ void StaticMeshUpdater::reflect(chaiscript::ChaiScript &context)
 
 void StaticMeshUpdater::reflect(lua_State* context)
 {
-    using position_list = std::vector<vec3>;
-    using normal_list = std::vector<vec3>;
-    using uv_list = std::vector<vec2>;
-    using face_list = std::vector<vec3i>;
+    using position_list = vector_wrapper<vec3>;
+    using normal_list = vector_wrapper<vec3>;
+    using uv_list = vector_wrapper<vec2>;
+    using face_list = vector_wrapper<vec3i>;
     
     luabridge::getGlobalNamespace(context).
     beginClass<StaticMeshUpdater>("MeshSystem").
@@ -248,6 +276,8 @@ void StaticMeshUpdater::reflect(lua_State* context)
     addFunction("setMaterialProperty", &StaticMeshUpdater::setMaterialProperty<vec3>).
     addFunction("setMaterialProperty", &StaticMeshUpdater::setMaterialProperty<vec4>).
     addFunction("updateMesh", &StaticMeshUpdater::updateMesh).
+    addFunction("setPositions", &StaticMeshUpdater::setPositions).
+    addFunction("setFaces", &StaticMeshUpdater::setFaces).
     endClass().
     beginClass<position_list>("PositionList").
     addConstructor<void(*)(void)>().
@@ -266,7 +296,6 @@ void StaticMeshUpdater::reflect(lua_State* context)
     addFunction<void (face_list::*) (const vec3i&)>("pushBack", &face_list::push_back).
     endClass().
     beginClass<MeshFilter>("MeshFilter").
-    addConstructor<void(*)(void)>().
     addData("positions", &MeshFilter::positions).
     addData("normals", &MeshFilter::normals).
     addData("texCoords", &MeshFilter::uv).
@@ -285,12 +314,12 @@ void StaticMeshUpdater::buildSphere(World::Entity e, size_t tessLevel)
         builder.clear();
         builder.buildIcosahedron();
         builder.tesselateAsSphere(tessLevel);
-        MeshFilter mesh;
-        mesh.positions = builder.vertices;
-        mesh.normals = builder.normals;
-        mesh.faces = builder.triangles;
+        auto mesh = &world.getAll<StaticMesh>()[e]->filter;
+        mesh->positions.value = builder.vertices;
+        mesh->normals.value = builder.normals;
+        mesh->faces.value = builder.triangles;
         
-        updateMesh(e, mesh);
+        updateMesh(e);
     });
 }
 

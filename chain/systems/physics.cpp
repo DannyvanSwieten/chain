@@ -10,6 +10,11 @@
 
 #include <iostream>
 
+PhysicsUpdater::PhysicsUpdater(World& w): System(w)
+{
+    
+}
+
 void PhysicsUpdater::operator()(World& w, double dt)
 {
 	std::vector<World::Entity> entitiesToUpdate;

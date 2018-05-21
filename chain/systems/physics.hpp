@@ -14,6 +14,7 @@
 class PhysicsUpdater: public System
 {
 public:
+    PhysicsUpdater(World& w);
 	void operator()(World& w, double dt) final;
     void reflect(chaiscript::ChaiScript&) final;
 	

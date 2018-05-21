@@ -18,7 +18,7 @@ static void keyCallback(GLFWwindow*,int,int,int,int);
 class InputUpdater: public System
 {
 public:
-    InputUpdater(GLFWwindow* window);
+    InputUpdater(World& w, GLFWwindow* window);
     
     void operator()(World& w, double dt) final;
     void registerKeyPress(int, int, int , int);

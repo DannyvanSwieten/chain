@@ -14,7 +14,7 @@ void keyCallback(GLFWwindow* window, int x, int y, int z, int w)
     self->registerKeyPress(x, y, z, w);
 }
 
-InputUpdater::InputUpdater(GLFWwindow *window): window(window)
+InputUpdater::InputUpdater(World& w, GLFWwindow *window): System(w), window(window)
 {
     assert(window);
 	

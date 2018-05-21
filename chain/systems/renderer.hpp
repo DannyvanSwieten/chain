@@ -51,7 +51,7 @@ class Renderer: public System
 {
 public:
     
-    Renderer(GLFWwindow* window, const std::string& name);
+    Renderer(World& w, GLFWwindow* window, const std::string& name);
     void operator()(World& world, double dt) final;
 	
 	void setUniforms(const Material& material);

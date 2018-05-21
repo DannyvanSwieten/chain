@@ -15,6 +15,7 @@ class CameraUpdater: public System
 {
 public:
     
+    CameraUpdater(World& w);
     void operator()(World& w, double dt) final;
     
     void lookAt(World::Entity, const vec3& target);

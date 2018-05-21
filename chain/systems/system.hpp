@@ -19,9 +19,12 @@ class System
 public:
     
     using StateUpdate = std::function<void(World&, double dt)>;
+    using PreStartTask = std::function<void(World&)>;
     
+    void onStart(World&);
     void update(World&, double);
     void scheduleStateUpdate(StateUpdate update);
+    void schedulePreStartTask(PreStartTask);
 
     virtual void start(World&) { }
     virtual void operator()(World&, double) = 0;
@@ -31,4 +34,5 @@ public:
 protected:
     
     moodycamel::ConcurrentQueue<StateUpdate> stateUpdates;
+    moodycamel::ConcurrentQueue<PreStartTask> preStartTasks;
 };

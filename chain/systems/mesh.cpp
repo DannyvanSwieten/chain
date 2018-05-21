@@ -251,19 +251,19 @@ void StaticMeshUpdater::reflect(lua_State* context)
     endClass().
     beginClass<position_list>("PositionList").
     addConstructor<void(*)(void)>().
-    addFunction<void (position_list::*) (const vec3&)>("PushBack", &position_list::push_back).
+    addFunction<void (position_list::*) (const vec3&)>("pushBack", &position_list::push_back).
     endClass().
     beginClass<normal_list>("NormalList").
     addConstructor<void(*)(void)>().
-    addFunction<void (normal_list::*) (const vec3&)>("PushBack", &normal_list::push_back).
+    addFunction<void (normal_list::*) (const vec3&)>("pushBack", &normal_list::push_back).
     endClass().
     beginClass<uv_list>("UvList").
     addConstructor<void(*)(void)>().
-    addFunction<void (uv_list::*) (const vec2&)>("PushBack", &uv_list::push_back).
+    addFunction<void (uv_list::*) (const vec2&)>("pushBack", &uv_list::push_back).
     endClass().
     beginClass<face_list>("FaceList").
     addConstructor<void(*)(void)>().
-    addFunction<void (face_list::*) (const vec3i&)>("PushBack", &face_list::push_back).
+    addFunction<void (face_list::*) (const vec3i&)>("pushBack", &face_list::push_back).
     endClass().
     beginClass<MeshFilter>("MeshFilter").
     addConstructor<void(*)(void)>().

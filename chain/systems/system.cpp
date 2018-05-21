@@ -18,7 +18,21 @@ void System::update(World &w, double dt)
     (*this)(w, dt);
 }
 
+void System::onStart(World& w)
+{
+    PreStartTask task;
+    while(preStartTasks.try_dequeue(task))
+        task(w);
+    
+    start(w);
+}
+
 void System::scheduleStateUpdate(StateUpdate update)
 {
     stateUpdates.enqueue(update);
+}
+
+void System::schedulePreStartTask(PreStartTask update)
+{
+    preStartTasks.enqueue(update);
 }

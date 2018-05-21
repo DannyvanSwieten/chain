@@ -17,8 +17,6 @@ LuaScriptSystem::LuaScriptSystem()
 
 void LuaScriptSystem::start(World& w)
 {
-    
-    
     auto& scripts = w.getAll<LuaScript>();
     std::vector<World::Entity> entities;
     w.getAllEntitiesWithComponents<LuaScript>(entities);
@@ -45,7 +43,7 @@ void LuaScriptSystem::operator()(World &w, double dt)
 
 void LuaScriptSystem::loadScript(World::Entity e, const std::string &pathToFile)
 {
-    scheduleStateUpdate([&, e, pathToFile](World& w, double dt) {
+    schedulePreStartTask([&, e, pathToFile](World& w) {
         if(!w.has<LuaScript>(e))
             w.attach<LuaScript>(e);
         
@@ -56,7 +54,6 @@ void LuaScriptSystem::loadScript(World::Entity e, const std::string &pathToFile)
         {
             script->onUpdate = luabridge::getGlobal(script->L, "onUpdate");
             script->onStart = luabridge::getGlobal(script->L, "onStart");
-            int x = 0;
         }
         else
         {

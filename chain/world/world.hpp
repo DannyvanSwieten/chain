@@ -40,13 +40,19 @@ public:
     void setScale(Entity e, const vec3& scale);
     
     Entity getEntityByName(const std::string& name);
+    
+    template<class C>
+    void attachAsync(Entity entity)
+    {
+        stateUpdates.enqueue([&, entity](World&){
+            collection.initialize<C>(entity);
+        });
+    }
 	
 	template<class C>
 	void attach(Entity entity)
 	{
-        stateUpdates.enqueue([&, entity](World&){
-            collection.initialize<C>(entity);
-        });
+        collection.initialize<C>(entity);
 	}
 	
 	template<typename C>

@@ -111,7 +111,7 @@ void World::addUpdater(System* system)
 void World::start()
 {
     for(auto& updater: updaters)
-        updater->start(*this);
+        updater->onStart(*this);
 }
 
 void World::update(double dt)

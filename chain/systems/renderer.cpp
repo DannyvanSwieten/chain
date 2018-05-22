@@ -12,13 +12,17 @@
 Renderer::Renderer(World& w, GLFWwindow *window, const std::string& name): System(w), window(window), name(name)
 { 
     glfwSetWindowTitle(window, name.c_str());
+    
+    schedulePreStartTask([&](World&) {
+        glfwMakeContextCurrent(this->window);
+    });
 }
 
 void Renderer::operator()(World &w, double dt)
 {
     glfwMakeContextCurrent(window);
     
-    glClearColor(0, 0, 0, 0);
+    glClearColor(1, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     renderStaticMeshes(w, dt);

@@ -78,8 +78,14 @@ void StaticMeshUpdater::createMeshForEntity(World& w, World::Entity e)
     assert( (error = glGetError()) == GL_NO_ERROR);
     
 	glGenVertexArrays(1, &m->vao);
+    assert(m->vao != 0);
+    assert( (error = glGetError()) == GL_NO_ERROR);
 	glGenBuffers(1, &m->vbo);
+    assert(m->vbo != 0);
+    assert( (error = glGetError()) == GL_NO_ERROR);
 	glGenBuffers(1, &m->ibo);
+    assert(m->ibo != 0);
+    assert( (error = glGetError()) == GL_NO_ERROR);
 	
 	glBindVertexArray(m->vao);
 	glBindBuffer(GL_ARRAY_BUFFER, m->vbo);
@@ -206,6 +212,17 @@ void StaticMeshUpdater::updateMeshFromFilter(World& w, World::Entity e)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+void StaticMeshUpdater::setPrimitiveType(World::Entity e, uint32_t primitiveType)
+{
+    if(!world.has<StaticMesh>(e))
+    {
+        world.attach<StaticMesh>(e);
+        createMeshForEntity(world, e);
+    }
+    
+    world.getAll<StaticMesh>()[e]->filter.primitiveType = primitiveType;
+}
+
 void StaticMeshUpdater::setPositions(World::Entity e, const vector_wrapper<vec3> &positions)
 {
     if(!world.has<StaticMesh>(e))
@@ -278,6 +295,7 @@ void StaticMeshUpdater::reflect(lua_State* context)
     addFunction("updateMesh", &StaticMeshUpdater::updateMesh).
     addFunction("setPositions", &StaticMeshUpdater::setPositions).
     addFunction("setFaces", &StaticMeshUpdater::setFaces).
+    addFunction("setPrimitiveType", &StaticMeshUpdater::setPrimitiveType).
     endClass().
     beginClass<position_list>("PositionList").
     addConstructor<void(*)(void)>().

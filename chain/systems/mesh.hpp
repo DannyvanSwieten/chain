@@ -41,6 +41,7 @@ public:
     void reflect(chaiscript::ChaiScript& ) override;
     void reflect(lua_State* ) override;
     
+    void setPrimitiveType(World::Entity e, uint32_t primitiveType);
     void setPositions(World::Entity e, const vector_wrapper<vec3>& positions);
     void setFaces(World::Entity e, const vector_wrapper<vec3i>& faces);
     

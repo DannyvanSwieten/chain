@@ -22,12 +22,20 @@ void World::reflect(chaiscript::ChaiScript& ctx)
     ctx.add(chaiscript::fun(&World::setPosition), "setPosition");
     ctx.add((chaiscript::fun(&World::getPosition)), "getPosition");
     
+    
     for(auto& system: updaters)
         system->reflect(ctx);
 }
 
 void World::reflect(lua_State* state)
 {
+    luabridge::getGlobalNamespace(state).
+    beginClass<World>("World").
+    addFunction("setPosition", &World::setPosition).
+    endClass();
+    
+    luabridge::setGlobal(state, this, "world");
+    
     for(auto& system: updaters)
         system->reflect(state);
 }

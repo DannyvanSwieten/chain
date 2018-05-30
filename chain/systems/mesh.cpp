@@ -20,13 +20,19 @@ layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec2 uv;
 
+out vec3 fragPosition;
+out vec3 fragNormal;
+
 uniform mat4 modelMatrix = mat4(1.0);
 uniform mat4 viewMatrix = mat4(1.0);
 uniform mat4 projectionMatrix = mat4(1.0);
 
 void main()
 {
-	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+    mat4 viewModelMatrix = viewMatrix * modelMatrix;
+	gl_Position = projectionMatrix * viewModelMatrix * vec4(position, 1.0);
+    fragPosition = vec3(viewModelMatrix * vec4(position, 1.0));
+    fragNormal = vec3(viewModelMatrix * vec4(normal, 1.0));
 }
 
 )";
@@ -34,13 +40,21 @@ void main()
 const std::string FRAGMENT_SHADER = R"(
 #version 330
 
+in vec3 fragPosition;
+in vec3 fragNormal;
+
 layout(location = 0) out vec4 fragmentColour;
 
 uniform vec3 albedo;
+vec3 light = vec3(1, 1, 1);
 
 void main()
 {
-	fragmentColour = vec4(albedo, 1.0);
+    vec3 N = normalize(fragNormal);
+    vec3 L = normalize(light);
+    float I = dot(N, L);
+    fragmentColour = vec4(N * 0.5 + 0.5, 1.0);
+    fragmentColour = vec4(albedo, 1.0) * I;
 }
 
 )";
@@ -288,14 +302,15 @@ void StaticMeshUpdater::reflect(lua_State* context)
     
     luabridge::getGlobalNamespace(context).
     beginClass<StaticMeshUpdater>("MeshSystem").
-    addFunction("setMaterialProperty", &StaticMeshUpdater::setMaterialProperty<float>).
-    addFunction("setMaterialProperty", &StaticMeshUpdater::setMaterialProperty<vec2>).
-    addFunction("setMaterialProperty", &StaticMeshUpdater::setMaterialProperty<vec3>).
-    addFunction("setMaterialProperty", &StaticMeshUpdater::setMaterialProperty<vec4>).
+    addFunction("setMaterialPropertyFloat", &StaticMeshUpdater::setMaterialProperty<float>).
+    addFunction("setMaterialPropertyVec2", &StaticMeshUpdater::setMaterialProperty<vec2>).
+    addFunction("setMaterialPropertyVec3", &StaticMeshUpdater::setMaterialProperty<vec3>).
+    addFunction("setMaterialPropertyVec4", &StaticMeshUpdater::setMaterialProperty<vec4>).
     addFunction("updateMesh", &StaticMeshUpdater::updateMesh).
     addFunction("setPositions", &StaticMeshUpdater::setPositions).
     addFunction("setFaces", &StaticMeshUpdater::setFaces).
     addFunction("setPrimitiveType", &StaticMeshUpdater::setPrimitiveType).
+    addFunction("buildSphere", &StaticMeshUpdater::buildSphere).
     endClass().
     beginClass<position_list>("PositionList").
     addConstructor<void(*)(void)>().
@@ -328,14 +343,22 @@ void StaticMeshUpdater::reflect(lua_State* context)
 
 void StaticMeshUpdater::buildSphere(World::Entity e, size_t tessLevel)
 {
+    if(!world.has<StaticMesh>(e))
+    {
+        world.attach<StaticMesh>(e);
+        createMeshForEntity(world, e);
+    }
+    
     scheduleStateUpdate([&, e, tessLevel](World& w, double dt) {
         builder.clear();
         builder.buildIcosahedron();
         builder.tesselateAsSphere(tessLevel);
+        builder.recalculateNormals();
         auto mesh = &world.getAll<StaticMesh>()[e]->filter;
         mesh->positions.value = builder.vertices;
         mesh->normals.value = builder.normals;
         mesh->faces.value = builder.triangles;
+        mesh->primitiveType = GL_TRIANGLES;
         
         updateMesh(e);
     });

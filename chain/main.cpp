@@ -18,6 +18,9 @@ public:
         gridEntity = engine.getWorld().createEntity();
         engine.getLuaContext().loadScript(gridEntity, "/Users/dannyvanswieten/Desktop/UniformGrid.lua");
         
+        sphereEntity = engine.getWorld().createEntity();
+        engine.getLuaContext().loadScript(sphereEntity, "/Users/dannyvanswieten/Desktop/Sphere.lua");
+        
         cameraEntity = engine.getWorld().createEntity();
         engine.getLuaContext().loadScript(cameraEntity, "/Users/dannyvanswieten/Desktop/Camera.lua");
     }
@@ -41,6 +44,7 @@ private:
     
     World::Entity gridEntity;
     World::Entity cameraEntity;
+    World::Entity sphereEntity;
     
     World::Entity luaEntity;
 };

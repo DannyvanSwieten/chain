@@ -13,8 +13,8 @@
 
 struct Camera
 {
-    vec3 position;
-    vec3 target;
+    vec3 position{0, 0, -3};
+    vec3 target{0, 0, 0};
     vec3 up = vec3::UP;
     
     float fieldOfView = 65.0;

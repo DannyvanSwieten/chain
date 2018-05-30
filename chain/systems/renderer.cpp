@@ -17,12 +17,11 @@ Renderer::Renderer(World& w, GLFWwindow *window, const std::string& name): Syste
         glfwMakeContextCurrent(this->window);
     });
 }
-
 void Renderer::operator()(World &w, double dt)
 {
     glfwMakeContextCurrent(window);
     
-    glClearColor(1, 0, 0, 0);
+    glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     renderStaticMeshes(w, dt);
@@ -52,9 +51,6 @@ void Renderer::renderStaticMeshes(World &w, double dt)
         const auto& m = meshes[e];
         const auto& mat = m->material;
         
-        if(!m->vao)
-            continue;
-        
         glBindVertexArray(m->vao);
         glUseProgram(mat.program);
         
@@ -66,6 +62,9 @@ void Renderer::renderStaticMeshes(World &w, double dt)
         model[0][0] = t->scale.x;
         model[1][1] = t->scale.y;
         model[2][2] = t->scale.z;
+        
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
         
         setUniforms(mat);
         

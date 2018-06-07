@@ -16,6 +16,8 @@
 		FA0B71792089BB150070A18E /* engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA0B71772089BB150070A18E /* engine.cpp */; };
 		FA0B717C2089C4830070A18E /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA0B717B2089C4830070A18E /* system.cpp */; };
 		FA1637D7208F15F90075FED6 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA1637D5208F15F90075FED6 /* game.cpp */; };
+		FAA1D08820C86C0B00EA787E /* resource_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FAA1D08620C86C0B00EA787E /* resource_manager.cpp */; };
+		FAA1D08D20C90F8300EA787E /* opengl_renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FAA1D08B20C90F8300EA787E /* opengl_renderer.cpp */; };
 		FADD64FF2099A86400AA9AD4 /* lua_script_system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADD64FD2099A86400AA9AD4 /* lua_script_system.cpp */; };
 		FADFA9632074B99F001351CF /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADFA9612074B99F001351CF /* input.cpp */; };
 		FADFA9662074C00A001351CF /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FADFA9642074C00A001351CF /* renderer.cpp */; };
@@ -62,6 +64,11 @@
 		FA1637D6208F15F90075FED6 /* game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game.hpp; sourceTree = "<group>"; };
 		FA1FF0F420B33F8500C08BE0 /* vector_wrapper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vector_wrapper.hpp; sourceTree = "<group>"; };
 		FA579FDA207540D600F59139 /* static_mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = static_mesh.hpp; sourceTree = "<group>"; };
+		FAA1D08620C86C0B00EA787E /* resource_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = resource_manager.cpp; sourceTree = "<group>"; };
+		FAA1D08720C86C0B00EA787E /* resource_manager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = resource_manager.hpp; sourceTree = "<group>"; };
+		FAA1D08A20C90EFA00EA787E /* renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = renderer.hpp; sourceTree = "<group>"; };
+		FAA1D08B20C90F8300EA787E /* opengl_renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = opengl_renderer.cpp; sourceTree = "<group>"; };
+		FAA1D08C20C90F8300EA787E /* opengl_renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = opengl_renderer.hpp; sourceTree = "<group>"; };
 		FAC38E5B206E963F00E1778A /* components.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = components.hpp; sourceTree = "<group>"; };
 		FAC38E5D206E966700E1778A /* transform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = transform.hpp; sourceTree = "<group>"; };
 		FAC38E5E206E96E100E1778A /* vec.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec.hpp; sourceTree = "<group>"; };
@@ -138,6 +145,7 @@
 		3070FD92206A83C2000287DF /* chain */ = {
 			isa = PBXGroup;
 			children = (
+				FAA1D08920C90EE900EA787E /* renderer */,
 				3070FD93206A83C2000287DF /* main.cpp */,
 				FA0B71772089BB150070A18E /* engine.cpp */,
 				FA0B71782089BB150070A18E /* engine.hpp */,
@@ -148,8 +156,20 @@
 				FA1637D5208F15F90075FED6 /* game.cpp */,
 				FA1637D6208F15F90075FED6 /* game.hpp */,
 				FA1FF0F420B33F8500C08BE0 /* vector_wrapper.hpp */,
+				FAA1D08620C86C0B00EA787E /* resource_manager.cpp */,
+				FAA1D08720C86C0B00EA787E /* resource_manager.hpp */,
 			);
 			path = chain;
+			sourceTree = "<group>";
+		};
+		FAA1D08920C90EE900EA787E /* renderer */ = {
+			isa = PBXGroup;
+			children = (
+				FAA1D08A20C90EFA00EA787E /* renderer.hpp */,
+				FAA1D08B20C90F8300EA787E /* opengl_renderer.cpp */,
+				FAA1D08C20C90F8300EA787E /* opengl_renderer.hpp */,
+			);
+			path = renderer;
 			sourceTree = "<group>";
 		};
 		FAC38E5C206E964800E1778A /* components */ = {
@@ -256,6 +276,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3064E9A920762210005DBEBD /* script.cpp in Sources */,
+				FAA1D08820C86C0B00EA787E /* resource_manager.cpp in Sources */,
+				FAA1D08D20C90F8300EA787E /* opengl_renderer.cpp in Sources */,
 				FA0B71792089BB150070A18E /* engine.cpp in Sources */,
 				FAE0819B207DFEF9000BA909 /* camera_system.cpp in Sources */,
 				FADD64FF2099A86400AA9AD4 /* lua_script_system.cpp in Sources */,
@@ -401,6 +423,9 @@
 					"-lglfw",
 					"-lbear-graphics_static",
 					"-llua",
+					"-ljsonata_static",
+					"-lboost_filesystem",
+					"-lboost_system",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -416,6 +441,9 @@
 					"-lglfw",
 					"-lbear-graphics_static",
 					"-llua",
+					"-ljsonata_static",
+					"-lboost_filesystem",
+					"-lboost_system",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

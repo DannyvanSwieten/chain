@@ -38,17 +38,22 @@ public:
 		});
 	}
     
+    void setMaterial(World::Entity e, const char* name);
+    
     void reflect(chaiscript::ChaiScript& ) override;
     void reflect(lua_State* ) override;
     
     void setPrimitiveType(World::Entity e, uint32_t primitiveType);
     void setPositions(World::Entity e, const vector_wrapper<vec3>& positions);
+    void setNormals(World::Entity e, const vector_wrapper<vec3>& normals);
+    void setUvs(World::Entity e, const vector_wrapper<vec2>& uvs);
     void setFaces(World::Entity e, const vector_wrapper<vec3i>& faces);
     
     void buildSphere(World::Entity e, size_t tessLevel);
     	
 private:
 	
+    void loadShaders(World::Entity e, const std::string& vShader, const std::string& fShader);
 	void createMeshForEntity(World& w, World::Entity e);
 	void updateMeshFromFilter(World& w, World::Entity e);
     

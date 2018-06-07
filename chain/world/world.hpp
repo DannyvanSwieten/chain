@@ -125,7 +125,7 @@ private:
     
 	std::map<World::Entity, std::string> entityNames;
 	
-	std::vector<System*> updaters;
+	std::vector<System*> systems;
     
     moodycamel::ConcurrentQueue<std::function<void(World&)>> stateUpdates;
 };

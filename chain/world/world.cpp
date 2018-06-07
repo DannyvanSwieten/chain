@@ -23,7 +23,7 @@ void World::reflect(chaiscript::ChaiScript& ctx)
     ctx.add((chaiscript::fun(&World::getPosition)), "getPosition");
     
     
-    for(auto& system: updaters)
+    for(auto& system: systems)
         system->reflect(ctx);
 }
 
@@ -36,7 +36,7 @@ void World::reflect(lua_State* state)
     
     luabridge::setGlobal(state, this, "world");
     
-    for(auto& system: updaters)
+    for(auto& system: systems)
         system->reflect(state);
 }
 
@@ -113,12 +113,12 @@ World::Entity World::getEntityByName(const std::string &name)
 
 void World::addUpdater(System* system)
 {
-	updaters.emplace_back(system);
+	systems.emplace_back(system);
 }
 
 void World::start()
 {
-    for(auto& updater: updaters)
+    for(auto& updater: systems)
         updater->onStart(*this);
 }
 
@@ -129,6 +129,6 @@ void World::update(double dt)
     while(stateUpdates.try_dequeue(update))
         update(*this);
     
-	for(auto& updater: updaters)
+	for(auto& updater: systems)
 		updater->update(*this, dt);
 }

@@ -11,6 +11,8 @@
 #include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
 
+#include <moditone/jsonata/json.hpp>
+
 #include <iostream>
 
 const std::string VERTEX_SHADER = R"(
@@ -32,7 +34,7 @@ void main()
     mat4 viewModelMatrix = viewMatrix * modelMatrix;
 	gl_Position = projectionMatrix * viewModelMatrix * vec4(position, 1.0);
     fragPosition = vec3(viewModelMatrix * vec4(position, 1.0));
-    fragNormal = vec3(viewModelMatrix * vec4(normal, 1.0));
+    fragNormal = normal;
 }
 
 )";
@@ -46,14 +48,13 @@ in vec3 fragNormal;
 layout(location = 0) out vec4 fragmentColour;
 
 uniform vec3 albedo;
-vec3 light = vec3(1, 1, 1);
+vec3 light = vec3(1, 1, 4);
 
 void main()
 {
     vec3 N = normalize(fragNormal);
     vec3 L = normalize(light);
     float I = dot(N, L);
-    fragmentColour = vec4(N * 0.5 + 0.5, 1.0);
     fragmentColour = vec4(albedo, 1.0) * I;
 }
 
@@ -113,12 +114,12 @@ void StaticMeshUpdater::createMeshForEntity(World& w, World::Entity e)
 	glEnableVertexAttribArray(1);
 	
 	glVertexAttribPointer(1, 3, GL_FLOAT, false,
-						  0, (void*)offsetof(Vertex, normal));
+						  sizeof(Vertex), (void*)offsetof(Vertex, normal));
 	
 	glEnableVertexAttribArray(2);
 	
 	glVertexAttribPointer(2, 2, GL_FLOAT, false,
-						  0, (void*)offsetof(Vertex, uv));
+						  sizeof(Vertex), (void*)offsetof(Vertex, uv));
 	
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -248,6 +249,28 @@ void StaticMeshUpdater::setPositions(World::Entity e, const vector_wrapper<vec3>
     world.getAll<StaticMesh>()[e]->filter.positions = positions;
 }
 
+void StaticMeshUpdater::setNormals(World::Entity e, const vector_wrapper<vec3>& normals)
+{
+    if(!world.has<StaticMesh>(e))
+    {
+        world.attach<StaticMesh>(e);
+        createMeshForEntity(world, e);
+    }
+    
+    world.getAll<StaticMesh>()[e]->filter.normals = normals;
+}
+
+void StaticMeshUpdater::setUvs(World::Entity e, const vector_wrapper<vec2>& uvs)
+{
+    if(!world.has<StaticMesh>(e))
+    {
+        world.attach<StaticMesh>(e);
+        createMeshForEntity(world, e);
+    }
+    
+    world.getAll<StaticMesh>()[e]->filter.uv = uvs;
+}
+
 void StaticMeshUpdater::setFaces(World::Entity e, const vector_wrapper<vec3i> &faces)
 {
     if(!world.has<StaticMesh>(e))
@@ -257,6 +280,86 @@ void StaticMeshUpdater::setFaces(World::Entity e, const vector_wrapper<vec3i> &f
     }
     
     world.getAll<StaticMesh>()[e]->filter.faces = faces;
+}
+
+void StaticMeshUpdater::setMaterial(World::Entity e, const char *name)
+{
+    std::ifstream stream(name);
+    const auto var = json::parse(stream);
+    
+    const auto& vertexShaderString = var["vertex_shader"].asString();
+    const auto& fragmentShaderString = var["fragment_shader"].asString();
+    
+    loadShaders(e, vertexShaderString, fragmentShaderString);
+}
+
+void StaticMeshUpdater::loadShaders(World::Entity e, const std::string& vShader, const std::string& fShader)
+{
+    scheduleStateUpdate([&, e](World& w, double dt) {
+        
+        auto& m = w.getAll<StaticMesh>()[e];
+        m->material.vertexShader = glCreateShader(GL_VERTEX_SHADER);
+        m->material.fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+        m->material.program = glCreateProgram();
+        
+        const char* s = (const GLchar*)vShader.c_str();
+        glShaderSource(m->material.vertexShader, 1, &s, 0);
+        glCompileShader(m->material.vertexShader);
+        
+        GLint success = 0;
+        glGetShaderiv(m->material.vertexShader, GL_COMPILE_STATUS, &success);
+        if(!success)
+        {
+            GLint logSize = 0;
+            glGetShaderiv(m->material.vertexShader, GL_INFO_LOG_LENGTH, &logSize);
+            std::vector<char> log(logSize);
+            glGetShaderInfoLog(m->material.program, logSize, &logSize, log.data());
+            for(const auto c: log)
+                std::cout << c;
+            
+            std::cout << '\n';
+        }
+        
+        const char* fs = fShader.c_str();
+        glShaderSource(m->material.fragmentShader, 1, &fs, 0);
+        glCompileShader(m->material.fragmentShader);
+        
+        success = 0;
+        glGetShaderiv(m->material.fragmentShader, GL_COMPILE_STATUS, &success);
+        if(!success)
+        {
+            GLint logSize = 0;
+            glGetShaderiv(m->material.fragmentShader, GL_INFO_LOG_LENGTH, &logSize);
+            std::vector<char> log(logSize);
+            glGetShaderInfoLog(m->material.fragmentShader, logSize, &logSize, log.data());
+            for(const auto c: log)
+                std::cout << c;
+            
+            std::cout << '\n';
+        }
+        
+        glAttachShader(m->material.program, m->material.vertexShader);
+        glAttachShader(m->material.program, m->material.fragmentShader);
+        
+        glLinkProgram(m->material.program);
+        
+        success = 0;
+        glGetProgramiv(m->material.program, GL_LINK_STATUS, &success);
+        if(!success)
+        {
+            GLint logSize = 0;
+            glGetProgramiv(m->material.program, GL_INFO_LOG_LENGTH, &logSize);
+            std::vector<char> log(logSize);
+            glGetProgramInfoLog(m->material.program, logSize, &logSize, log.data());
+            for(const auto c: log)
+                std::cout << c;
+            
+            std::cout << '\n';
+        }
+        
+        uint32_t error = 0;
+        assert( (error = glGetError()) == GL_NO_ERROR);
+    });
 }
 
 void StaticMeshUpdater::reflect(chaiscript::ChaiScript &context)
@@ -308,6 +411,8 @@ void StaticMeshUpdater::reflect(lua_State* context)
     addFunction("setMaterialPropertyVec4", &StaticMeshUpdater::setMaterialProperty<vec4>).
     addFunction("updateMesh", &StaticMeshUpdater::updateMesh).
     addFunction("setPositions", &StaticMeshUpdater::setPositions).
+    addFunction("setNormals", &StaticMeshUpdater::setNormals).
+    addFunction("setUvs", &StaticMeshUpdater::setUvs).
     addFunction("setFaces", &StaticMeshUpdater::setFaces).
     addFunction("setPrimitiveType", &StaticMeshUpdater::setPrimitiveType).
     addFunction("buildSphere", &StaticMeshUpdater::buildSphere).
